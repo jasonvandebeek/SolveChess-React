@@ -40,7 +40,7 @@ export default function BoardComponent({ fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPP
                                 className='w-[calc(100%/8)]'
                                 key={`square-${rankIndex}-${fileIndex}`}
                             >
-                                {piece && <PieceComponent piece={piece} board={board}/>}
+                                {piece && <PieceComponent piece={piece} board={board} canDrag={piece.GetSide() === side}/>}
                             </Square>
                         ))}
                     </div>

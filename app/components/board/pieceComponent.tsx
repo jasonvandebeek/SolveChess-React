@@ -1,14 +1,14 @@
 import './board.css';
 import { useDrag } from "react-dnd"; 
 import PieceBase from './logic/pieces/pieceBase';
-import Board from './logic/board';
 
 type Props = {
     piece: PieceBase;
     board: (PieceBase | null)[][];
+    canDrag: boolean;
 }
 
-export default function PieceComponent({ piece, board }:Props) {
+export default function PieceComponent({ piece, board, canDrag }:Props) {
     const FindSelf = (piece: PieceBase) => {
         for (let rank = 0; rank < board.length; rank++) {
             for (let file = 0; file < board[rank].length; file++) {
@@ -28,6 +28,6 @@ export default function PieceComponent({ piece, board }:Props) {
     
 
     return (
-        <div ref={drag} className={`piece ${piece.GetType()} ${piece.GetSide()} h-[70%] aspect-[1/1]`}/>
+        <div ref={canDrag ? drag : null} className={`piece ${piece.GetType()} ${piece.GetSide()} h-[70%] aspect-[1/1]`}/>
     );
 }
