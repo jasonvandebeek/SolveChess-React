@@ -1,5 +1,4 @@
 import { useDrop } from "react-dnd";
-import Piece from './pieceComponent';
 
 type Props = {
     file: number;
@@ -7,11 +6,11 @@ type Props = {
     hasFileNotation?: boolean;
     hasRankNotation?: boolean;
     children?: React.ReactNode;
-    onDrop: (fromRank: number, fromFile: number, toRank: number, toFile: number) => void;
+    onMove: (fromRank: number, fromFile: number, toRank: number, toFile: number) => void;
 };
 
-export default function Square({ file, rank, hasFileNotation = false, hasRankNotation = false, children, onDrop}:Props) {
-    if (file < 1 || file > 8 || rank < 1 || rank > 8) {
+export default function Square({ file, rank, hasFileNotation = false, hasRankNotation = false, children, onMove}:Props) {
+    if (file < 0 || file > 7 || rank < 0 || rank > 7) {
         throw new Error("Coordinates are out of bounds!");
     }
 
@@ -19,19 +18,18 @@ export default function Square({ file, rank, hasFileNotation = false, hasRankNot
 
     const [, drop] = useDrop(() => ({
         accept: "piece",
-        drop: (item: { rank: number, file: number }) => onDrop(item.rank, item.file, rank, file)
-        
+        drop: (item: { rank: number, file: number }) => onMove(item.rank, item.file, rank, file)
     }));
     
     const info = [];
 
     if (hasRankNotation) {
-        const rankText = 9 - rank;
+        const rankText = 8 - rank;
         info.push(<span key={`rank-${rank}`} className='font-bold absolute top-[3px] left-[3px] leading-[1]'>{rankText}</span>);
     }
 
     if (hasFileNotation) {
-        const fileText = String.fromCharCode(64 + file);
+        const fileText = String.fromCharCode(65 + file);
         info.push(<span key={`file-${file}`} className='font-bold absolute bottom-0 right-[4px] leading-[1]'>{fileText}</span>);
     }
 
