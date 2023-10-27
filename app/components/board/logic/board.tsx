@@ -28,6 +28,23 @@ export default class Board {
         }
     }
 
+    MovePiece(fromRank: number, fromFile: number, toRank: number, toFile: number) {
+        const piece = this.board[fromRank][fromFile];
+
+        this.board[toRank][toFile] = piece;
+        this.board[fromRank][fromFile] = null;
+    }
+
+    GetPieceLocation(piece: PieceBase) {
+        for (let rank = 0; rank < this.board.length; rank++) {
+            for (let file = 0; file < this.board[rank].length; file++) {
+                if (this.board[rank][file] === piece) {
+                    return [rank, file]; 
+                }
+            }
+        }
+    }
+
     GetBoardArray() {
         return this.board;
     }

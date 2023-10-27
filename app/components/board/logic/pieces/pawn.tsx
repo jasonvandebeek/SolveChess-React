@@ -1,7 +1,13 @@
 import ChessPiece from './pieceBase'
 
 export default class Pawn extends ChessPiece {
-    getMoves() {
-      return 'moves';
-    }
+
+  GetMoves() {
+    return 'moves';
+  }
+
+  GetType(): 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king' {
+    return 'pawn';
+  }
+
 }

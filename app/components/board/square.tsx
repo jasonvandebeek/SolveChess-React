@@ -1,19 +1,16 @@
 import { useDrop } from "react-dnd";
-import Piece from './piece';
+import Piece from './pieceComponent';
 
 type Props = {
     file: number;
     rank: number;
     hasFileNotation?: boolean;
     hasRankNotation?: boolean;
-    piece?: string;
+    children?: React.ReactNode;
+    onDrop: (fromRank: number, fromFile: number, toRank: number, toFile: number) => void;
 };
 
-interface Item {
-    id: string; 
-}
-
-export default function Square({ file, rank, hasFileNotation = false, hasRankNotation = false, piece }:Props) {
+export default function Square({ file, rank, hasFileNotation = false, hasRankNotation = false, children, onDrop}:Props) {
     if (file < 1 || file > 8 || rank < 1 || rank > 8) {
         throw new Error("Coordinates are out of bounds!");
     }
@@ -22,13 +19,8 @@ export default function Square({ file, rank, hasFileNotation = false, hasRankNot
 
     const [, drop] = useDrop(() => ({
         accept: "piece",
-        drop: (item: Item) => {
-            const squareElement = document.getElementById(id) as HTMLElement;
-            const pieceElement = document.getElementById(item.id);
-            if (pieceElement) {
-                squareElement.appendChild(pieceElement);
-            }
-        }
+        drop: (item: { rank: number, file: number }) => onDrop(item.rank, item.file, rank, file)
+        
     }));
     
     const info = [];
@@ -47,7 +39,7 @@ export default function Square({ file, rank, hasFileNotation = false, hasRankNot
     return (
         <div id={id} ref={drop} className={`relative ${bgColor} aspect-[1/1] flex justify-center items-center`} data-rank={rank} data-file={file}>
             {info}
-            {piece !== null ? <Piece id={`${piece}-${rank};${file}`} piece={piece}/> : null}
+            {children}
         </div>
     );
 }

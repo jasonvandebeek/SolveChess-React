@@ -1,8 +1,15 @@
 
 export default abstract class PieceBase {
-    constructor(side: string) {
-        console.log(side);
+    private side: 'white' | 'black';
+
+    constructor(side: 'white' | 'black') {
+        this.side = side;
     }
 
-    abstract getMoves(): string;
+    abstract GetMoves(): string;
+    abstract GetType(): 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king';
+     
+    GetSide(): 'white' | 'black' {
+        return this.side;
+    }
 }

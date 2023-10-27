@@ -4,50 +4,50 @@
     background-size: contain;
 }
 
-.piece.p {
+.piece.pawn.black {
     background-image: url('/images/pieces/black/pawn.png');
 }
 
-.piece.r {
+.piece.rook.black {
     background-image: url('/images/pieces/black/rook.png');
 }
 
-.piece.n {
+.piece.knight.black {
     background-image: url('/images/pieces/black/knight.png');
 }
 
-.piece.b {
+.piece.bishop.black {
     background-image: url('/images/pieces/black/bishop.png');
 }
 
-.piece.q {
+.piece.queen.black {
     background-image: url('/images/pieces/black/queen.png');
 }
 
-.piece.k {
+.piece.king.black {
     background-image: url('/images/pieces/black/king.png');
 }
 
-.piece.P {
+.piece.pawn.white {
     background-image: url('/images/pieces/white/pawn.png');
 }
 
-.piece.R {
+.piece.rook.white {
     background-image: url('/images/pieces/white/rook.png');
 }
 
-.piece.N {
+.piece.knight.white {
     background-image: url('/images/pieces/white/knight.png');
 }
 
-.piece.B {
+.piece.bishop.white {
     background-image: url('/images/pieces/white/bishop.png');
 }
 
-.piece.Q {
+.piece.queen.white {
     background-image: url('/images/pieces/white/queen.png');
 }
 
-.piece.K {
+.piece.king.white {
     background-image: url('/images/pieces/white/king.png');
 }
