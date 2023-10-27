@@ -6,7 +6,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Board from './logic/board';
 import PieceComponent from './pieceComponent';
 import { useState } from 'react';
-import PieceBase from './logic/pieces/pieceBase';
 
 type Props = {
     fen?: string;
@@ -20,27 +19,31 @@ export default function BoardComponent({ fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPP
         const newBoard = [...board]
         const piece = newBoard[fromRank][fromFile];
 
-        newBoard[toRank][toFile] = piece;
         newBoard[fromRank][fromFile] = null;
-
+        newBoard[toRank][toFile] = piece;
+        
         SetBoard(newBoard);
     }
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className="grid grid-cols-8 w-[100%] rounded overflow-hidden text-background select-none shadow-normal">
+            <div className={`flex ${side === 'white' ? "flex-wrap" : "flex-wrap-reverse"} w-[100%] rounded overflow-hidden text-background select-none shadow-normal`}>
                 {board.map((rank, rankIndex) => (
-                    rank.map((piece, fileIndex) => (
-                        <Square 
-                            file={fileIndex} 
-                            rank={rankIndex} 
-                            hasFileNotation={rankIndex === 0 && side === 'black' || rankIndex === 7 && side === 'white'}
-                            hasRankNotation={fileIndex === 7 && side === 'black' || fileIndex === 0 && side === 'white'}
-                            onMove={MovePiece}
-                        >
-                            {piece && <PieceComponent piece={piece} board={board}/>}
-                        </Square>
-                    ))
+                    <div key={`rank-${rankIndex}`} className={`flex w-[100%] ${side === 'white' ? "flex-row" : "flex-row-reverse"}`}>
+                        {rank.map((piece, fileIndex) => (
+                            <Square 
+                                file={fileIndex} 
+                                rank={rankIndex} 
+                                hasFileNotation={rankIndex === 0 && side === 'black' || rankIndex === 7 && side === 'white'}
+                                hasRankNotation={fileIndex === 7 && side === 'black' || fileIndex === 0 && side === 'white'}
+                                onMove={MovePiece}
+                                className='w-[calc(100%/8)]'
+                                key={`square-${rankIndex}-${fileIndex}`}
+                            >
+                                {piece && <PieceComponent piece={piece} board={board}/>}
+                            </Square>
+                        ))}
+                    </div>
                 ))}
             </div>
         </DndProvider>
