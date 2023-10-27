@@ -1,5 +1,5 @@
 import Player from '../../components/board/player';
-import Board from '../../components/board/board';
+import BoardComponent from '../../components/board/boardComponent';
 
 export default function Page({ params }: { params: { id: string } }) {
     return (
@@ -8,7 +8,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
             <Player direction='rtl'/>
             
-            <Board side='white'/>
+            <BoardComponent side='white'/>
 
             <Player direction='ltr'/>
         </div>
