@@ -9,23 +9,12 @@ type Props = {
 }
 
 export default function PieceComponent({ piece, board, canDrag }:Props) {
-    const FindSelf = (piece: PieceBase) => {
-        for (let rank = 0; rank < board.length; rank++) {
-            for (let file = 0; file < board[rank].length; file++) {
-                if (board[rank][file] === piece) {
-                    return [rank, file]; 
-                }
-            }
-        }
-    }
-    const [rank, file]: any = FindSelf(piece);
+    const square = piece.FindSelf(board);
 
     const [, drag] = useDrag(() => ({
         type: "piece",
-        item: { rank, file }
+        item: square
     }));
-
-    
 
     return (
         <div ref={canDrag ? drag : null} className={`piece ${piece.GetType()} ${piece.GetSide()} h-[70%] aspect-[1/1]`}/>
