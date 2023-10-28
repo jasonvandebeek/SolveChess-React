@@ -14,8 +14,8 @@ type Props = {
 export default function squareComponent({ square, hasFileNotation = false, hasRankNotation = false, children, onDrop, className, canMove}:Props) {
     const [, drop] = useDrop(() => ({
         accept: "piece",
-        drop: (piece: Square) => onDrop(piece, square),
-        canDrop: ( piece: Square, monitor) => canMove(piece, square)
+        drop: (pieceSquare: Square) => onDrop(pieceSquare, square),
+        canDrop: ( pieceSquare: Square, monitor) => canMove(pieceSquare, square)
     }));
 
     const bgColor = (square.Rank + square.File) % 2 === 0 ? 'bg-white' : 'bg-highlight'

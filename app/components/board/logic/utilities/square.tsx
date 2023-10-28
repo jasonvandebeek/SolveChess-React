@@ -40,17 +40,17 @@ export default class Square {
         }           
     }
 
-    equals(obj: any): boolean {
+    Equals(obj: any): boolean {
         if (obj == null || this.constructor !== obj.constructor) {
             return false;
         }
 
         const other = obj as Square;
-
-        return this.Rank === other.Rank && this.File === other.File;
+        
+        return this.HashCode() === other.HashCode();
     }
 
-    hashCode(): number {
+    HashCode(): number {
         return this.Rank * 10 + this.File;
     }
 }

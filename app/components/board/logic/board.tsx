@@ -1,5 +1,6 @@
 import PieceBase from "./pieces/pieceBase";
 import PieceFactory from "./pieces/pieceFactory";
+import Square from "./utilities/square";
 
 export default class Board {
     private board: (PieceBase | null)[][] = new Array(8).fill(null).map(() => new Array(8).fill(null));;
@@ -27,8 +28,35 @@ export default class Board {
         }
     }
 
+    GetSquareOfPiece(piece: PieceBase) {
+        for (let rank = 0; rank < this.board.length; rank++) {
+            for (let file = 0; file < this.board[rank].length; file++) {
+                if (piece.Equals(this.board[rank][file])) {
+                    return new Square(rank, file); 
+                }
+            }
+        }
+
+        throw new Error("Invalid board given with piece!")
+    }
+
+    GetPieceAt(square: Square) {
+        return this.board[square.Rank][square.File];
+    }
+
     GetBoardArray() {
         return this.board;
+    }
+
+    MovePiece(from: Square, to: Square) {
+        const piece = this.board[from.Rank][from.File];
+
+        this.board[from.Rank][from.File] = null;
+        this.board[to.Rank][to.File] = piece;
+    }
+
+    CanPieceMoveTo(piece: PieceBase, target: Square) {
+        return piece.CanMoveToSquare(target, this);
     }
 }
 

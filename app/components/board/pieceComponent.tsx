@@ -1,22 +1,21 @@
 import './board.css';
 import { useDrag } from "react-dnd"; 
-import PieceBase from './logic/pieces/pieceBase';
+import Square from './logic/utilities/square';
 
 type Props = {
-    piece: PieceBase;
-    board: (PieceBase | null)[][];
+    type: "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
+    side: "white" | "black";
+    square: Square;
     canDrag: boolean;
 }
 
-export default function PieceComponent({ piece, board, canDrag }:Props) {
-    const square = piece.FindSelf(board);
-
+export default function PieceComponent({ type, side, square, canDrag }:Props) {
     const [, drag] = useDrag(() => ({
         type: "piece",
         item: square
     }));
 
     return (
-        <div ref={canDrag ? drag : null} className={`piece ${piece.GetType()} ${piece.GetSide()} h-[70%] aspect-[1/1]`}/>
+        <div ref={canDrag ? drag : null} className={`piece ${type} ${side} h-[70%] aspect-[1/1]`}/>
     );
 }

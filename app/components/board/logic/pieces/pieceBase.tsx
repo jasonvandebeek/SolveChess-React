@@ -1,44 +1,45 @@
 import Board from "../board";
 import Square from "../utilities/square";
+import { v4 as uuidv4 } from 'uuid';
 
 export default abstract class PieceBase {
-    private side: 'white' | 'black';
+
+    private readonly _id: string;
+    get Id(): string  {
+        return this._id;
+    }
+
+    private readonly _side: 'white' | 'black';
+    get Side(): 'white' | 'black' {
+        return this._side;
+    }
 
     constructor(side: 'white' | 'black') {
-        this.side = side;
+        this._id = uuidv4();
+        this._side = side;
     }
 
-    abstract GetMoves(board: Board): number[][];
+    abstract GetPossibleMoves(board: Board): Square[];
     abstract GetType(): 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king';
-     
-    GetSide(): 'white' | 'black' {
-        return this.side;
-    }
-
-    FindSelf(board: Board) {
-        for (let rank = 0; rank < board.length; rank++) {
-            for (let file = 0; file < board[rank].length; file++) {
-                if (board[rank][file] === this) {
-                    return new Square(rank, file); 
-                }
-            }
-        }
-
-        throw new Error("Invalid board given with piece!")
-    }
 
     CanMoveToSquare(target: Square, board: Board) {
-        const moves = this.GetMoves(board);
-        const coord = [to.Rank, to.File];
+        const moves = this.GetPossibleMoves(board);
 
-        let isCoordInMoves = false;
         for (const move of moves) {
-            if (move[0] === coord[0] && move[1] === coord[1]) {
-                isCoordInMoves = true;
-                break;
-            }
+            if (target.Equals(move)) 
+                return true;
         }
 
-        return isCoordInMoves;
+        return false;
     }
+
+    Equals(obj: any) {
+        if (obj == null || this.constructor !== obj.constructor) {
+            return false;
+        }
+
+        const other = obj as PieceBase;
+
+        return this.Id === other.Id;
+    } 
 }

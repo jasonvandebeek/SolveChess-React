@@ -14,44 +14,30 @@ type Props = {
 };
 
 export default function BoardComponent({ fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', side = 'white' }:Props) {
-    const [board, SetBoard] = useState(new Board(fen).GetBoardArray());
+    const board = new Board(fen);
+    const [boardArray, setBoardArray] = useState(board.GetBoardArray());
 
     const MovePiece = (from: Square, to: Square) => {
         if(!CanMove(from, to))
             return;
 
-        const newBoard = [...board]
-        const piece = newBoard[from.Rank][from.File];
-
-        newBoard[from.Rank][from.File] = null;
-        newBoard[to.Rank][to.File] = piece;
-        
-        SetBoard(newBoard);
+        board.MovePiece(from, to);
+        const newBoardArray = board.GetBoardArray();
+        setBoardArray([...newBoardArray]);
     }
 
     const CanMove = (from: Square, to: Square) => {
-        const piece = board[from.Rank][from.File];
+        const piece = board.GetPieceAt(from);
         if(piece === null)
             return false;
 
-        const moves = piece.GetMoves(board);
-        const coord = [to.Rank, to.File];
-
-        let isCoordInMoves = false;
-        for (const move of moves) {
-            if (move[0] === coord[0] && move[1] === coord[1]) {
-                isCoordInMoves = true;
-                break;
-            }
-        }
-
-        return isCoordInMoves;
+        return board.CanPieceMoveTo(piece, to);
     }
 
     return (
         <DndProvider backend={HTML5Backend}>
             <div className={`flex ${side === 'white' ? "flex-wrap" : "flex-wrap-reverse"} w-[100%] rounded overflow-hidden text-background select-none shadow-normal`}>
-                {board.map((rank, rankIndex) => (
+                {boardArray.map((rank, rankIndex) => (
                     <div key={`rank-${rankIndex}`} className={`flex w-[100%] ${side === 'white' ? "flex-row" : "flex-row-reverse"}`}>
                         {rank.map((piece, fileIndex) => (
                             <SquareComponent 
@@ -63,7 +49,7 @@ export default function BoardComponent({ fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPP
                                 key={`square-${rankIndex}-${fileIndex}`}
                                 canMove={CanMove}
                             >
-                                {piece && <PieceComponent piece={piece} board={board} canDrag={piece.GetSide() === side}/>}
+                                {piece && <PieceComponent type={piece.GetType()} side={piece.Side} square={new Square(rankIndex, fileIndex)} canDrag={piece.Side === side}/>}
                             </SquareComponent>
                         ))}
                     </div>
