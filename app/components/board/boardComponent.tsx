@@ -7,15 +7,19 @@ import Board from './logic/board';
 import PieceComponent from './pieceComponent';
 import { useState } from 'react';
 import Square from './logic/utilities/square';
+import Side from './logic/types/Side';
 
 type Props = {
     fen?: string;
-    side: 'white' | 'black';
+    side: Side;
+    sideToMove: Side;
 };
 
-export default function BoardComponent({ fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', side = 'white' }:Props) {
+export default function BoardComponent({ fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', side = 'white', sideToMove}:Props) {
     const board = new Board(fen);
+
     const [boardArray, setBoardArray] = useState(board.GetBoardArray());
+    const [_sideToMove, setSideToMove] = useState(sideToMove);
 
     const MovePiece = (from: Square, to: Square) => {
         if(!CanMove(from, to))
@@ -24,13 +28,14 @@ export default function BoardComponent({ fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPP
         board.MovePiece(from, to);
         const newBoardArray = board.GetBoardArray();
         setBoardArray([...newBoardArray]);
+        //setSideToMove('white' == _sideToMove ? 'black' : 'white');
     }
 
     const CanMove = (from: Square, to: Square) => {
         const piece = board.GetPieceAt(from);
         if(piece === null)
             return false;
-
+        
         return board.CanPieceMoveTo(piece, to);
     }
 
@@ -49,7 +54,7 @@ export default function BoardComponent({ fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPP
                                 key={`square-${rankIndex}-${fileIndex}`}
                                 canMove={CanMove}
                             >
-                                {piece && <PieceComponent type={piece.GetType()} side={piece.Side} square={new Square(rankIndex, fileIndex)} canDrag={piece.Side === side}/>}
+                                {piece && <PieceComponent type={piece.Type} side={piece.Side} square={new Square(rankIndex, fileIndex)} canDrag={piece.Side === side && _sideToMove === side}/>}
                             </SquareComponent>
                         ))}
                     </div>

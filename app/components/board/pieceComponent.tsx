@@ -1,10 +1,12 @@
 import './board.css';
 import { useDrag } from "react-dnd"; 
 import Square from './logic/utilities/square';
+import Side from './logic/types/Side';
+import PieceType from './logic/types/PieceType';
 
 type Props = {
-    type: "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
-    side: "white" | "black";
+    type: PieceType;
+    side: Side;
     square: Square;
     canDrag: boolean;
 }

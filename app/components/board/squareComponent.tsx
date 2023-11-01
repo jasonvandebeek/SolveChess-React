@@ -12,10 +12,14 @@ type Props = {
 };
 
 export default function squareComponent({ square, hasFileNotation = false, hasRankNotation = false, children, onDrop, className, canMove}:Props) {
-    const [, drop] = useDrop(() => ({
+    const [{ isOver, canDrop }, drop] = useDrop(() => ({
         accept: "piece",
         drop: (pieceSquare: Square) => onDrop(pieceSquare, square),
-        canDrop: ( pieceSquare: Square, monitor) => canMove(pieceSquare, square)
+        canDrop: ( pieceSquare: Square, monitor) => canMove(pieceSquare, square),
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver(),
+            canDrop: !!monitor.canDrop(),
+        }),
     }));
 
     const bgColor = (square.Rank + square.File) % 2 === 0 ? 'bg-white' : 'bg-highlight'
@@ -24,6 +28,15 @@ export default function squareComponent({ square, hasFileNotation = false, hasRa
             {hasRankNotation && <span key={`rank-${square.Rank}`} className='font-bold absolute top-[3px] left-[3px] leading-[1]'>{8 - square.Rank}</span>}
             {hasFileNotation && <span key={`file-${square.File}`} className='font-bold absolute bottom-0 right-[4px] leading-[1]'>{String.fromCharCode(65 + square.File)}</span>}
             {children}
+            {(canDrop && children == undefined) && (
+                <div className="w-[30%] h-[30%] rounded-[100vw] bg-container bg-opacity-40"></div>
+            )}
+            {(canDrop && children != undefined) && (
+                <div className="absolute w-[90%] h-[90%] rounded-[100vw] border-solid border-container border-opacity-40 border-[0.5rem]"></div>
+            )}
+            {isOver && (
+                <div className="absolute w-[100%] h-[100%] box-border border-solid border-container border-opacity-40 border-[0.5rem]"></div>
+            )}
         </div>
     );
 }
