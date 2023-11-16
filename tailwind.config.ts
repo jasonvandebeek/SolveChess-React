@@ -8,15 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
-        'white': '#FAFAFA',
+        'text': '#FAFAFA',
+        'text-alt': '#939393',
+        'tone-down': '#ACACAC',
         'highlight': '#4B8DEE',
         'background': '#1E2124',
         'container': '#23262A'
@@ -24,6 +21,13 @@ const config: Config = {
       boxShadow: {
         'small': '1px 1px 2px 1px rgba(0, 0, 0, 0.25)',
         'normal': '2px 2px 4px 2px rgba(0, 0, 0, 0.25)'
+      },
+      fontFamily: {
+        'chess-icons': ['chess-icons'],
+        'montserrat-alt': ['montserrat-alt']
+      },
+      backgroundImage: {
+        'marble-tile': "url('/images/marble-tile.png')"
       }
     },
   },

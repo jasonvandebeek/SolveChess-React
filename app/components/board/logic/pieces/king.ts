@@ -1,44 +1,52 @@
 import Board from '../board';
 import PieceType from '../types/PieceType';
 import Square from '../utilities/square';
-import ChessPiece from './pieceBase';
+import PieceBase from './pieceBase';
 
-export default class King extends ChessPiece {
+export default class King extends PieceBase {
 
 	protected _type: PieceType = "king";
 
 	//TODO: check for opponent check on this
-	//TODO: castling
-	GetPossibleMoves(board: Board, attackingOnly: boolean): Square[] {
-		const boardArray = board.GetBoardArray();
-		const currentSquare = board.GetSquareOfPiece(this);
-		const possibleMoves = [];
+	GetPossibleMoves(board: Board): Square[] {
+		return this.FilterOutIllegalMoves(this.KingMoves(board), board);
+	}
 
-		for (let i = 0; i < 8; i++) {
-			const rankOffset = [1, 1, 1, 0, 0, -1, -1, -1][i];
-			const fileOffset = [-1, 0, 1, -1, 1, -1, 0, 1][i];
+	IsChecked(board: Board): boolean {
+		if(this.AttackingPieceOfType(board, this.PawnMoves(board), 'pawn'))
+			return true;
 
-			let rank = currentSquare.Rank + rankOffset;
-			let file = currentSquare.File + fileOffset;
+		if(this.AttackingPieceOfType(board, this.RookMoves(board), 'rook'))
+			return true;
 
-			if (rank >= 0 && rank < 8 && file >= 0 && file < 8) {
-				const targetPiece = boardArray[rank][file];
-				
-				if(targetPiece != null) {
-					if(targetPiece.Side === this.Side)
-						continue;
+		if(this.AttackingPieceOfType(board, this.KnightMoves(board), 'knight'))
+			return true;
 
-					if(attackingOnly)
-						possibleMoves.push(new Square(rank, file));
-					else if(!this.KingInCheckAfterMove(new Square(rank, file), board)) 
-						possibleMoves.push(new Square(rank, file));
-				} else if(!attackingOnly && !this.KingInCheckAfterMove(new Square(rank, file), board)) {
-					possibleMoves.push(new Square(rank, file));
-				}
+		if(this.AttackingPieceOfType(board, this.BishopMoves(board), 'bishop'))
+			return true;
+
+		if(this.AttackingPieceOfType(board, this.QueenMoves(board), 'queen'))
+			return true;
+
+		if(this.AttackingPieceOfType(board, this.KingMoves(board), 'king'))
+			return true;
+
+		return false;
+	}
+
+	private AttackingPieceOfType(board: Board, moves: Square[], type: PieceType): boolean {
+		let found = false;
+
+		for (const move of moves) {
+			const target = board.GetPieceAt(move);
+
+			if (target != null && target.Type == type) {
+				found = true;
+				break;
 			}
 		}
 
-		return possibleMoves;
+		return found;
 	}
 
 }

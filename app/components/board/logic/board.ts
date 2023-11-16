@@ -1,3 +1,4 @@
+import King from "./pieces/king";
 import PieceBase from "./pieces/pieceBase";
 import PieceFactory from "./pieces/pieceFactory";
 import Side from "./types/Side";
@@ -5,12 +6,11 @@ import Square from "./utilities/square";
 
 export default class Board {
 
-    protected board: (PieceBase | null)[][] = new Array(8).fill(null).map(() => new Array(8).fill(null));;
+    protected board: (PieceBase | null)[][] = new Array(8).fill(null).map(() => new Array(8).fill(null));
 
     constructor(fen: string) {
-        if (!validateFEN(fen)) {
+        if (!isValidFEN(fen))
             throw new Error('Invalid FEN!')
-        }
 
         const ranks = fen.split(' ')[0].split('/');
 
@@ -52,6 +52,8 @@ export default class Board {
 
     MovePiece(from: Square, to: Square): void {
         const piece = this.board[from.Rank][from.File];
+        if(piece == null)
+            return;
 
         this.board[from.Rank][from.File] = null;
         this.board[to.Rank][to.File] = piece;
@@ -62,27 +64,11 @@ export default class Board {
     }
 
     KingInCheck(side: Side): boolean {
-        const kingSquare = this.FindKing(side);
-
-        for(let rank = 0; rank < this.board.length; rank++) {
-            for(let file = 0; file < this.board[rank].length; file++) {
-                const piece = this.board[rank][file];
-
-                if(piece == null || piece.Side === side)
-                    continue;
-
-                const moves = piece.GetPossibleMoves(this, true);
-                for (const move of moves) {
-                    if (kingSquare.Equals(move)) 
-                        return true;
-                }
-            };
-        };
-
-        return false;
+        const king = this.GetKing(side);
+        return king.IsChecked(this);
     }
 
-    FindKing(side: Side): Square {
+    private GetKing(side: Side): King {
         for(let rank = 0; rank < this.board.length; rank++) {
             for(let file = 0; file < this.board[rank].length; file++) {
                 const piece = this.board[rank][file];
@@ -90,7 +76,7 @@ export default class Board {
                 if(piece == null || piece.Type !== 'king' || piece.Side !== side)
                     continue;
 
-                return new Square(rank, file);
+                return piece as King;
             }
         }
 
@@ -98,7 +84,7 @@ export default class Board {
     }
 }
 
-function validateFEN(fen: string): boolean {
+function isValidFEN(fen: string): boolean {
     const fenRegex = /^\s*(((?:[rnbqkpRNBQKP1-8]+\/){7})[rnbqkpRNBQKP1-8]+)(\s([b|w]))?(\s([K|Q|k|q]{1,4}))?(\s(-|[a-h][1-8]))?(\s(\d+\s\d+))?$/;
     
     return fenRegex.test(fen);

@@ -25,10 +25,10 @@ export default abstract class PieceBase {
         this._side = side;
     }
 
-    abstract GetPossibleMoves(board: Board, attackingOnly: boolean): Square[];
+    abstract GetPossibleMoves(board: Board): Square[];
 
-    CanMoveToSquare(target: Square, board: Board) {
-        const moves = this.GetPossibleMoves(board, false);
+    CanMoveToSquare(target: Square, board: Board): boolean {
+        const moves = this.GetPossibleMoves(board);
 
         for (const move of moves) {
             if (target.Equals(move)) 
@@ -38,54 +38,179 @@ export default abstract class PieceBase {
         return false;
     }
 
-    KingInCheckAfterMove(moveTo: Square, board: Board) {
-        const newBoard = new ClonedBoard(board);
-        const currentSquare = board.GetSquareOfPiece(this);
-
-        newBoard.MovePiece(currentSquare, moveTo);
-        return newBoard.KingInCheck(this.Side);
-    }
-
-    private PawnMoves(board: Board): Square[] {
+    //TODO: add enpassant
+    protected PawnMoves(board: Board): Square[] {
         const boardArray = board.GetBoardArray();
         const startingPosition = board.GetSquareOfPiece(this);
-
         const forwardDirection = this.Side == 'white' ? -1 : 1;
+		const moves: Square[] = [];
+		let targetSquare = new Square(startingPosition.Rank + forwardDirection, startingPosition.File);
 
-		const possibleMoves: Square[] = [];
-		
-		let targetSquare = new Square(currentSquare.Rank + forwardDirection, currentSquare.File);
+		if (boardArray[targetSquare.Rank][targetSquare.File] === null) {
+			moves.push(targetSquare);
 
-		if (boardArray[targetSquare.Rank][targetSquare.File] === null && !attackingOnly) {
-			if(!this.KingInCheckAfterMove(targetSquare, board))
-				possibleMoves.push(targetSquare);
+			if (this.Side === 'white' && startingPosition.Rank === 6 || this.Side === 'black' && startingPosition.Rank === 1) {
+				targetSquare = new Square(startingPosition.Rank + forwardDirection * 2, startingPosition.File);
 
-			if (this.Side === 'white' && currentSquare.Rank === 6 || this.Side === 'black' && currentSquare.Rank === 1) {
-				targetSquare = new Square(currentSquare.Rank + forwardDirection * 2, currentSquare.File);
-
-				if (boardArray[targetSquare.Rank][targetSquare.File] === null && !this.KingInCheckAfterMove(targetSquare, board))
-					possibleMoves.push(targetSquare);
+				if (boardArray[targetSquare.Rank][targetSquare.File] === null)
+					moves.push(targetSquare);
 			}
 		}
 
-		if (currentSquare.File - 1 >= 0) {
-			targetSquare = new Square(currentSquare.Rank + forwardDirection, currentSquare.File - 1);
+		if (startingPosition.File - 1 >= 0) {
+			targetSquare = new Square(startingPosition.Rank + forwardDirection, startingPosition.File - 1);
 			const target = boardArray[targetSquare.Rank][targetSquare.File];
+
 			if (target !== null && target.Side !== this.Side)
-                possibleMoves.push(targetSquare);
+                moves.push(targetSquare);
 		}
 
-		if (currentSquare.File + 1 < 8) {
-			targetSquare = new Square(currentSquare.Rank + this.forwardDirection, currentSquare.File + 1);
+		if (startingPosition.File + 1 < 8) {
+			targetSquare = new Square(startingPosition.Rank + forwardDirection, startingPosition.File + 1);
 			const target = boardArray[targetSquare.Rank][targetSquare.File];
+
 			if (target !== null && target.Side !== this.Side)
-				if(attackingOnly)
-					possibleMoves.push(targetSquare);
-				else if(!this.KingInCheckAfterMove(targetSquare, board)) 
-					possibleMoves.push(targetSquare);
+				moves.push(targetSquare);
 		}
 
-		return possibleMoves;
+		return moves;
+    }
+
+    protected RookMoves(board: Board): Square[] {
+        const boardArray = board.GetBoardArray();
+		const startingPosition = board.GetSquareOfPiece(this);
+		const moves = [];
+
+		for (let i = 0; i < 4; i++) {
+			const rankOffset = [1, 0, -1, 0][i];
+			const fileOffset = [0, -1, 0, 1][i];
+
+			let rank = startingPosition.Rank + rankOffset;
+			let file = startingPosition.File + fileOffset;
+
+			while (rank >= 0 && rank < 8 && file >= 0 && file < 8) {
+				const targetPiece = boardArray[rank][file];
+
+				if (targetPiece != null) {
+					if (targetPiece.Side === this.Side)
+						break;
+
+					moves.push(new Square(rank, file));
+					break;
+				}
+
+				moves.push(new Square(rank, file));
+
+				rank += rankOffset;
+				file += fileOffset;
+			}
+		}
+
+		return moves;
+    }
+
+    protected KnightMoves(board: Board): Square[] {
+        const boardArray = board.GetBoardArray();
+		const startingPosition = board.GetSquareOfPiece(this);
+		const moves = [];
+
+		for (let i = 0; i < 8; i++) {
+			const rankOffset = [1, 2, 2, 1, -1, -2, -2, -1][i];
+			const fileOffset = [2, 1, -1, -2, -2, -1, 1, 2][i];
+
+			let rank = startingPosition.Rank + rankOffset;
+			let file = startingPosition.File + fileOffset;
+
+			if (rank >= 0 && rank < 8 && file >= 0 && file < 8) {
+				const targetPiece = boardArray[rank][file];
+				
+				if(targetPiece != null && targetPiece.Side === this.Side)
+                    continue;
+				
+				moves.push(new Square(rank, file));
+			}
+		}
+
+		return moves;
+    }
+
+    protected BishopMoves(board: Board): Square[] {
+        const boardArray = board.GetBoardArray();
+		const startingPosition = board.GetSquareOfPiece(this);
+		const moves = [];
+
+		for (let i = 0; i < 4; i++) {
+			const rankOffset = [1, 1, -1, -1][i];
+			const fileOffset = [1, -1, 1, -1][i];
+
+			let rank = startingPosition.Rank + rankOffset;
+			let file = startingPosition.File + fileOffset;
+
+			while (rank >= 0 && rank < 8 && file >= 0 && file < 8) {
+				const targetPiece = boardArray[rank][file];
+				
+				if (targetPiece != null) {
+					if (targetPiece.Side === this.Side)
+						break;
+					
+		
+					moves.push(new Square(rank, file));
+					break;
+				}
+
+				moves.push(new Square(rank, file));
+
+				rank += rankOffset;
+				file += fileOffset;
+			}
+		}
+
+		return moves;
+    }
+
+    protected QueenMoves(board: Board): Square[] {
+        return this.RookMoves(board).concat(this.BishopMoves(board));
+    }
+
+    //TODO: castling
+    protected KingMoves(board: Board): Square[] {
+        const boardArray = board.GetBoardArray();
+		const startingPosition = board.GetSquareOfPiece(this);
+		const moves = [];
+
+		for (let i = 0; i < 8; i++) {
+			const rankOffset = [1, 1, 1, 0, 0, -1, -1, -1][i];
+			const fileOffset = [-1, 0, 1, -1, 1, -1, 0, 1][i];
+
+			let rank = startingPosition.Rank + rankOffset;
+			let file = startingPosition.File + fileOffset;
+
+			if (rank >= 0 && rank < 8 && file >= 0 && file < 8) {
+				const targetPiece = boardArray[rank][file];
+				
+				if(targetPiece != null && targetPiece.Side === this.Side)
+					continue;
+
+				moves.push(new Square(rank, file));
+			}
+		}
+
+		return moves;
+    }
+
+    protected FilterOutIllegalMoves(moves: Square[], board: Board): Square[] {
+        const legalMoves: Square[] = []; 
+        
+        moves.forEach(move => {
+            const newBoard = new ClonedBoard(board);
+            const currentSquare = board.GetSquareOfPiece(this);
+
+            newBoard.MovePiece(currentSquare, move);
+            if(!newBoard.KingInCheck(this.Side))
+                legalMoves.push(move);
+        });
+
+        return legalMoves;
     }
 
     Equals(obj: any) {

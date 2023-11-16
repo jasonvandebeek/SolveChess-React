@@ -1,3 +1,4 @@
+import Side from "../types/Side";
 import Bishop from "./bishop";
 import King from "./king";
 import Knight from "./knight";
@@ -7,7 +8,7 @@ import Rook from "./rook";
 
 export default class PieceFactory {
 
-    BuildPiece(type: 'p' | 'r' | 'n' | 'b' | 'q' | 'k', side: 'black' | 'white') {
+    BuildPiece(type: 'p' | 'r' | 'n' | 'b' | 'q' | 'k', side: Side) {
         switch(type) {
             case('p'):
                 return new Pawn(side);
