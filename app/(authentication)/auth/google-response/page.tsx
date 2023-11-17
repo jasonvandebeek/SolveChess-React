@@ -11,6 +11,8 @@ export default function GoogleCallback() {
         if (window.opener) {
             window.opener.postMessage({ accessToken }, window.location.origin);
         }
+
+        window.close();
     });
         
     return (

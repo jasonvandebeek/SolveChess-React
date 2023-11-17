@@ -15,19 +15,12 @@ export default function GoogleOauthButton() {
         window.addEventListener('message', (event) => {
             if (event.origin === window.location.origin && event.source === newWindow) {
                 const accessToken = event.data.accessToken;
-                newWindow?.close();
 
                 axios.post('https://localhost:7121/auth/google', { accessToken }, {
                         withCredentials: true,
                         headers: {
                         'Content-Type': 'application/json',
                         },
-                    })
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .catch(error => {
-                        console.log(error.response);
                     });
             }
         });
