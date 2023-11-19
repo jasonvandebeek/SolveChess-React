@@ -29,6 +29,11 @@ const config: Config = {
       backgroundImage: {
         'marble-tile': "url('/images/marble-tile.png')"
       },
+      dropShadow: {
+        'small': '1px 1px 2px rgba(0, 0, 0, 0.25)',
+        'normal': '2px 2px 4px rgba(0, 0, 0, 0.35)',
+        'large': '4px 4px 8px rgba(0, 0, 0, 0.5)',
+      },
     },
   },
   plugins: [],
