@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import Account from "../components/account/account";
 import GameCard from "../components/gameCard";
 import Logo from "../components/logo";
-import './animations.css'
-import axios from "axios";
-import Head from 'next/head'
+import './animations.css';
+import { getUserId } from "@/app/utils/userAuthenticationApi";
 
 export default function Page() {
     const [userId, setUserId] = useState<string | null>(null);
@@ -25,16 +24,16 @@ export default function Page() {
     };
 
     useEffect(() => {
-        
-        axios.get('https://localhost:7121/auth/userId', { withCredentials: true })
-            .then(response => {
-                if(response.data === "") {
-                    setUserId(null);
-                } else {
-                    setUserId(response.data);
-                }
-            });
-            
+        const fetchUserId = async () => {
+            try {
+                const userId = await getUserId();
+                setUserId(userId);
+            } catch (error) {
+                //Handle error (display an error message)
+            } 
+        }
+
+        fetchUserId();
     }, [])
 
     return (

@@ -1,8 +1,8 @@
 'use client'
 
-import { use, useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import LoggedInAccount from "./loggedInAccount";
+import { getUserData } from "@/app/utils/api";
 
 interface Props {
     userId: string | null;
@@ -14,27 +14,20 @@ export default function Account({ userId }:Props) {
     const [profilePictureUrl, setProfilePictureUrl] = useState("");
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (userId == null) {
-                    return;
-                }
-    
-                const userDataResponse = await axios.get(`https://localhost:7211/Users/${userId}`, { withCredentials: true });
-                setUsername(userDataResponse.data['username']);
-                setProfilePictureUrl(userDataResponse.data['profilePictureUrl']);
-            } catch (error: any) {
-                if (axios.isAxiosError(error) && error.response?.status === 401)
-                    return;
-    
-                if (error.code === 'ERR_NETWORK')
-                    return;
+        const fetchUserData = async () => {
+            if(userId == null)
+                return;
 
-                console.error(error);
-            };
-        };
-    
-        fetchData();
+            try {
+                const userData = await getUserData(userId);
+                setUsername(userData.username);
+                setProfilePictureUrl(userData.profilePictureUrl);
+            } catch (error) {
+                //Handle error (display an error message)
+            } 
+          };
+      
+          fetchUserData();
     }, [userId]);
 
     return (
