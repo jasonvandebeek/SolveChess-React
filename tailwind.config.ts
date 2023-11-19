@@ -28,7 +28,7 @@ const config: Config = {
       },
       backgroundImage: {
         'marble-tile': "url('/images/marble-tile.png')"
-      }
+      },
     },
   },
   plugins: [],

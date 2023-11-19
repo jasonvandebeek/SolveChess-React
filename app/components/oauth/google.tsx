@@ -16,11 +16,13 @@ export default function GoogleOauthButton() {
             if (event.origin === window.location.origin && event.source === newWindow) {
                 const accessToken = event.data.accessToken;
 
-                axios.post('https://localhost:7121/auth/google', { accessToken }, {
+                axios.post('https://localhost:7121/auth/google-login', { accessToken }, {
                         withCredentials: true,
                         headers: {
-                        'Content-Type': 'application/json',
+                            'Content-Type': 'application/json',
                         },
+                    }).then(response => {
+                        window.location.href = '/';
                     });
             }
         });
