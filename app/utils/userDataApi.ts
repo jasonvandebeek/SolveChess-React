@@ -19,7 +19,7 @@ export const getUserData = async (userId: string): Promise<UserData> => {
             username: username, 
             profilePictureUrl: profilePictureUrl 
         }
-    } catch (error) {
+    } catch(error) {
         console.error('Error fetching user data:', error);
         throw error;
     }
