@@ -1,15 +1,16 @@
 "use client"
 
-import { googleLogin } from "@/app/utils/api";
-
-const clientId = '622451295217-09du3qqhs779e5kuv3j758eqhjr8h1bh.apps.googleusercontent.com';
-const redirectUri = 'https://localhost:3000/auth/google-response';
-const scope = 'email';
-
-const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
+import { googleLogin } from "@/utils/api";
 
 export default function GoogleOauthButton() {
+
     const startGoogleAuthentication = async () => {
+        const clientId = '622451295217-09du3qqhs779e5kuv3j758eqhjr8h1bh.apps.googleusercontent.com';
+        const redirectUri = `${window.location.origin}/auth/google-response`;
+        const scope = 'email';
+        
+        const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
+
         try {
             const newWindow = window.open(authUrl, 'Google Login', 'width=480,height=640');
 

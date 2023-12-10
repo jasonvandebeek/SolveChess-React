@@ -1,8 +1,8 @@
 import './board.css';
 import { useDrag } from "react-dnd"; 
-import Square from './logic/utilities/square';
-import Side from './logic/types/Side';
-import PieceType from './logic/types/PieceType';
+import Square from '@/logic/utilities/square';
+import Side from '@/logic/types/Side';
+import PieceType from '@/logic/types/PieceType';
 
 type Props = {
     type: PieceType;

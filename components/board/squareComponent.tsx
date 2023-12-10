@@ -1,5 +1,5 @@
 import { useDrop } from "react-dnd";
-import Square from './logic/utilities/square'
+import Square from '@/logic/utilities/square'
 
 type Props = {
     square: Square;

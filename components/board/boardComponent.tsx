@@ -3,11 +3,11 @@
 import SquareComponent from './squareComponent';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import Board from './logic/board';
+import Board from '@/logic/board';
 import PieceComponent from './pieceComponent';
 import { useEffect, useState } from 'react';
-import Square from './logic/utilities/square';
-import Side from './logic/types/Side';
+import Square from '@/logic/utilities/square';
+import Side from '@/logic/types/Side';
 import PlayerComponent from './playerComponent';
 import * as signalR from '@microsoft/signalr';
 import axios from 'axios';

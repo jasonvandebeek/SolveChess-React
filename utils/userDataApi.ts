@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://localhost:7211";
+const baseUrl = "https://api.solvechess.xyz";
 
 interface UserData {
     username: string;

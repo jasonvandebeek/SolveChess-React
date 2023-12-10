@@ -1,5 +1,5 @@
-import Logo from '@/app/components/logo';
-import BoardComponent from '@/app/components/board/boardComponent';
+import Logo from '@/components/logo';
+import BoardComponent from '@/components/board/boardComponent';
 
 export default function Page({ params }: { params: { id: string } }) {
     return (

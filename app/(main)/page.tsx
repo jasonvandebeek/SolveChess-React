@@ -1,14 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import Account from "../components/account/account";
-import GameCard from "../components/gameCard";
-import Logo from "../components/logo";
+import Account from "@/components/account";
+import GameCard from "@/components/gameCard";
+import Logo from "@/components/logo";
 import './animations.css';
-import { getUserId } from "@/app/utils/userAuthenticationApi";
+import Button from "@/components/button";
 
 export default function Page() {
-    const [userId, setUserId] = useState<string | null>(null);
     const [state, setState] = useState(0);
     const [wait, setWait] = useState(false);
 
@@ -23,29 +22,14 @@ export default function Page() {
         }
     };
 
-    useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                const userId = await getUserId();
-                setUserId(userId);
-            } catch (error) {
-                //Handle error (display an error message)
-            } 
-        }
-
-        fetchUserId();
-    }, [])
-
     return (
         <>
-            <div className="absolute top-[2rem] right-[3rem]">
-                <Account userId={userId}/>
-            </div>
+            <Account/>
             <div className="flex flex-col items-center h-[100vh] justify-center overflow-hidden">
                 {state === 0 ? (
                     <div className="flex flex-col items-center mt-[-3rem] select-none">
                         <span className={`text-text font-extrabold font-montserrat-alt text-[5rem] drop-shadow-large ${wait && 'animate-fall-down-right-delayed'}`}>SOLVECHESS.AI</span>
-                        <button className={`text-text font-bold text-[1.5rem] py-[0.75rem] px-[3rem] bg-highlight rounded-[2px] shadow-small hover:scale-[1.1] transition duration-[0.2s] ${wait && 'animate-fall-down-left'}`} onClick={handlePlayButtonClick}>Play</button>
+                        <Button className={`px-[3rem] text-[1.5rem] ${wait && 'animate-fall-down-left'}`} onClick={handlePlayButtonClick}>Play</Button>
                     </div>
                 ) : (
                     <>

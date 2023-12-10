@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://localhost:7121";
+const baseUrl = "https://api.solvechess.xyz";
 
 export const getUserId = async (): Promise<string | null> => {
     try {
@@ -18,7 +18,7 @@ export const getUserId = async (): Promise<string | null> => {
 
 export const googleLogin = async (accessToken: string): Promise<any> => {
     try {
-        axios.post('https://localhost:7121/auth/google-login', 
+        axios.post(`${baseUrl}/auth/google-login`, 
             { accessToken }, 
             {
                 withCredentials: true,

@@ -1,6 +1,6 @@
-import Logo from "@/app/components/logo";
+import Logo from "@/components/logo";
 import './page.css'
-import GoogleOauthButton from "@/app/components/oauth/google";
+import GoogleOauthButton from "@/components/oauth/google";
 
 export default function Page() {
     
@@ -27,14 +27,20 @@ export default function Page() {
                     <span>EMAIL LOGIN</span>
                     <div className="flex flex-col gap-[2rem] items-center">
                         <div className="w-[100%] text-[0.75rem] flex flex-col gap-[1rem]">
-                            <div className="relative flex flex-row items-center rounded-[2px] shadow-small h-[2.5rem] border-solid border-field-border border-[1px] box-border border-transparent focus-within:border-highlight transition duration-[0.2s]">
-                                <i className="fi fi-sr-envelope flex items-center text-highlight py-[0.5rem] pl-[0.5rem] text-[1.25rem]"/>
-                                <input type="text" className="peer w-[100%] h-[100%] mr-[0.5rem] text-[0.85rem] text-text-alt font-normal bg-transparent outline-none p-[0.5rem] placeholder-tone-down" placeholder="Email..."/>
+                            <div className="flex flex-col gap-[0.25rem]">
+                                <span>EMAIL ADDRESS</span>
+                                <div className="relative flex flex-row items-center rounded-[2px] shadow-small h-[2.5rem] border-solid border-field-border border-[1px] box-border border-transparent focus-within:border-highlight transition duration-[0.2s]">
+                                    <i className="fi fi-sr-envelope flex items-center text-highlight py-[0.5rem] pl-[0.5rem] text-[1.25rem]"/>
+                                    <input type="text" className="peer w-[100%] h-[100%] mr-[0.5rem] text-[0.85rem] text-text-alt font-normal bg-transparent outline-none p-[0.5rem] placeholder-tone-down" placeholder="Email..."/>
+                                </div>
                             </div>
-                            <div className="relative flex flex-row items-center rounded-[2px] shadow-small h-[2.5rem] border-solid border-field-border border-[1px] box-border border-transparent focus-within:border-highlight transition duration-[0.2s]">
-                                <i className="fi fi-sr-lock flex items-center text-highlight py-[0.5rem] pl-[0.5rem] text-[1.25rem]"/>
-                                <input type="password" className="peer w-[100%] h-[100%] mr-[0.5rem] text-[0.85rem] text-text-alt font-normal bg-transparent outline-none p-[0.5rem] placeholder-tone-down" placeholder="Password..."/>
-                            </div>
+                            <div className="flex flex-col gap-[0.25rem]">
+                                <span>PASSWORD</span>
+                                <div className="relative flex flex-row items-center rounded-[2px] shadow-small h-[2.5rem] border-solid border-field-border border-[1px] box-border border-transparent focus-within:border-highlight transition duration-[0.2s]">
+                                    <i className="fi fi-sr-lock flex items-center text-highlight py-[0.5rem] pl-[0.5rem] text-[1.25rem]"/>
+                                    <input type="password" className="peer w-[100%] h-[100%] mr-[0.5rem] text-[0.85rem] text-text-alt font-normal bg-transparent outline-none p-[0.5rem] placeholder-tone-down" placeholder="Password..."/>
+                                </div>
+                            </div>     
                             <div className="font-normal flex flex-row w-[100%] text-[1rem]">
                                 <div className="flex flex-row gap-[0.5rem]">
                                     <div className="relative h-[1.25rem] aspect-[1/1] shadow-small rounded-[2px]">
@@ -45,7 +51,7 @@ export default function Page() {
                                     </div>
                                     <span className="text-[0.85rem]">Remember Me</span>
                                 </div>
-                                <span className="text-highlight cursor-pointer ml-auto select-none text-[0.85rem]"><u>Forgot Password?</u></span>
+                                <span className="text-highlight cursor-pointer ml-auto select-none text-[0.85rem]"><a href="/reset-password"><u>Forgot Password?</u></a></span>
                             </div>
                         </div>
                         <button className="bg-highlight rounded-[2px] text-text shadow-small w-[100%] h-[2.5rem] hover:shadow-normal hover:scale-[1.05] transition duration-[0.2s]">LOGIN</button> 
