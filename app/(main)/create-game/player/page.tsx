@@ -4,6 +4,8 @@ import Account from "@/components/account";
 import Button from "@/components/button";
 import ColorSelector from "@/components/colorSelector";
 import Logo from "@/components/logo";
+import SearchBar from "@/components/search/searchBar";
+import SearchHandler from "@/components/search/searchHandler";
 import { useState } from "react";
 
 export default function Page() {
@@ -17,7 +19,7 @@ export default function Page() {
         <>
             <Logo/>
             <Account/>
-            <div className="flex flex-row gap-[9rem] pt-[10rem] w-fit mx-auto text-text font-bold">
+            <div className="flex flex-row gap-[9rem] pt-[16rem] w-fit mx-auto text-text font-bold">
                 <div className="flex flex-col gap-[3.75rem]">
                     <div className="flex flex-col gap-[1.25rem]">
                         <span className="text-[2rem]">Play vs</span>
@@ -47,6 +49,16 @@ export default function Page() {
                         </div>
                     </div>
                     <Button className="text-[1.5rem] w-fit">Create Game</Button>
+                </div>
+                <div className="w-[17.5rem] flex flex-col gap-[1rem]">
+                    <div>
+                        <SearchHandler handleSearchChange={() => {}} searchableObjects={[]}>
+                            <SearchBar property={""}/>
+                        </SearchHandler>
+                    </div>
+                    <div className="grow">
+
+                    </div>
                 </div>
             </div>
         </>

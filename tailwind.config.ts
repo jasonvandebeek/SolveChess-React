@@ -14,7 +14,7 @@ const config: Config = {
         'text': '#FAFAFA',
         'text-alt': '#0F1214',
         'tone-down': '#AEB3C2',
-        'highlight': '#3675D3',
+        'highlight': '#4687E9',
         'background': '#181A20',
         'container': '#1B1E24'
       },

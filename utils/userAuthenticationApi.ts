@@ -16,9 +16,9 @@ export const getUserId = async (): Promise<string | null> => {
     }
 };
 
-export const googleLogin = async (accessToken: string): Promise<any> => {
+export const googleLogin = async (accessToken: string) => {
     try {
-        axios.post(`${baseUrl}/auth/google-login`, 
+        await axios.post(`${baseUrl}/auth/google-login`, 
             { accessToken }, 
             {
                 withCredentials: true,

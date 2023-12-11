@@ -11,21 +11,23 @@ export default function GoogleOauthButton() {
         
         const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
 
-        try {
-            const newWindow = window.open(authUrl, 'Google Login', 'width=480,height=640');
+        const newWindow = window.open(authUrl, 'Google Login', 'width=480,height=640');
 
-            window.addEventListener('message', async (event) => {
-                if (event.origin !== window.location.origin || event.source !== newWindow)
-                    return;
+        const messageListener = async (event: MessageEvent) => {
+            if (event.origin !== window.location.origin || event.source !== newWindow)
+                return;
 
+            try {
                 const accessToken = event.data.accessToken;
-                await googleLogin(accessToken).then(() => {
-                    window.location.href = '/';
-                });
-            });
-        } catch (error) {
-            //Handle error (display an error message)
-        } 
+                await googleLogin(accessToken);
+                window.location.href = '/';
+            } catch (error) {
+                //Handle error (display an error message)
+            }
+        };
+
+        window.removeEventListener('message', messageListener);
+        window.addEventListener('message', messageListener);
     }
 
     return (
