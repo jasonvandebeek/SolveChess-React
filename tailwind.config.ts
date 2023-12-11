@@ -12,11 +12,11 @@ const config: Config = {
         transparent: 'transparent',
         current: 'currentColor',
         'text': '#FAFAFA',
-        'text-alt': '#939393',
-        'tone-down': '#ACACAC',
-        'highlight': '#4B8DEE',
-        'background': '#1E2124',
-        'container': '#23262A'
+        'text-alt': '#0F1214',
+        'tone-down': '#AEB3C2',
+        'highlight': '#3675D3',
+        'background': '#181A20',
+        'container': '#1B1E24'
       },
       boxShadow: {
         'small': '1px 1px 2px 1px rgba(0, 0, 0, 0.25)',

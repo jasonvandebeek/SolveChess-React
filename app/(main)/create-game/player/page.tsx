@@ -1,8 +1,18 @@
+"use client"
+
 import Account from "@/components/account";
 import Button from "@/components/button";
+import ColorSelector from "@/components/colorSelector";
 import Logo from "@/components/logo";
+import { useState } from "react";
 
 export default function Page() {
+    const [selectedColor, setSelectedColor] = useState("RANDOM");
+
+    const handleColorChange = (color: 'WHITE' | 'BLACK' | 'RANDOM') => {
+        setSelectedColor(color);
+    }
+
     return (
         <>
             <Logo/>
@@ -21,19 +31,19 @@ export default function Page() {
                     <div className="flex flex-col gap-[1.25rem]">
                         <span className="text-[2rem]">I play as</span>
                         <div className="flex flex-row gap-[1rem] items-center">
-                            <div className="w-[4.5rem] aspect-[1/1] bg-text rounded-[0.25rem] shadow-small hover:scale-[1.1] transition duration-[0.2s] cursor-pointer justify-center text-center">
-                                <span className="relative text-[#18191A] text-[3rem] z-[2] font-chess-icons font-normal">♔</span>
-                            </div>
+                            <ColorSelector color="WHITE" isSelected={selectedColor === "WHITE"} className="bg-text" onClick={handleColorChange}>
+                                <span className="font-chess-icons font-normal">♔</span>
+                            </ColorSelector>
                             <span>OR</span>
-                            <div className="relative w-[4.5rem] aspect-[1/1] bg-transparent rounded-[0.25rem] shadow-small hover:scale-[1.1] transition duration-[0.2s] cursor-pointer justify-center text-center">
-                                <span className="relative text-[#18191A] text-[3rem] z-[2]">?</span>
-                                <div className="absolute h-[100%] w-[50%] bg-text rounded-l-[0.25rem] top-0 z-[1]"></div>
-                                <div className="absolute h-[100%] w-[50%] bg-container rounded-r-[0.25rem] right-0 top-0 z-[1]"></div>
-                            </div>
+                            <ColorSelector color="RANDOM" isSelected={selectedColor === "RANDOM"} onClick={handleColorChange}>
+                                <span className="relative z-[1]">?</span>
+                                <div className="absolute h-[100%] w-[50%] bg-text rounded-l-[0.25rem] top-0"></div>
+                                <div className="absolute h-[100%] w-[50%] bg-container rounded-r-[0.25rem] right-0 top-0"></div>
+                            </ColorSelector>
                             <span>OR</span>
-                            <div className="w-[4.5rem] aspect-[1/1] bg-container rounded-[0.25rem] shadow-small hover:scale-[1.1] transition duration-[0.2s] cursor-pointer justify-center text-center">
-                                <span className="relative text-[#18191A] text-[3rem] z-[2] font-chess-icons font-normal">♔</span>
-                            </div>
+                            <ColorSelector color="BLACK" isSelected={selectedColor === "BLACK"} className="bg-container" onClick={handleColorChange}>
+                                <span className="font-chess-icons font-normal">♔</span>
+                            </ColorSelector>
                         </div>
                     </div>
                     <Button className="text-[1.5rem] w-fit">Create Game</Button>

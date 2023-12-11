@@ -11,7 +11,7 @@ export default function Page() {
                     <Logo/>
                 </div>
             </div>
-            <div className="font-bold text-text-alt w-[25rem] flex flex-col gap-[1.5rem] mx-auto mt-[-2rem]">
+            <div className="font-bold text-tone-down w-[25rem] flex flex-col gap-[1.5rem] mx-auto mt-[-2rem]">
                 <div className="flex flex-col gap-[1.25rem] px-[0.75rem]">
                     <span>SOCIAL LOGIN</span>
                     <div className="flex flex-row w-[100%]">
@@ -31,14 +31,14 @@ export default function Page() {
                                 <span>EMAIL ADDRESS</span>
                                 <div className="relative flex flex-row items-center rounded-[2px] shadow-small h-[2.5rem] border-solid border-field-border border-[1px] box-border border-transparent focus-within:border-highlight transition duration-[0.2s]">
                                     <i className="fi fi-sr-envelope flex items-center text-highlight py-[0.5rem] pl-[0.5rem] text-[1.25rem]"/>
-                                    <input type="text" className="peer w-[100%] h-[100%] mr-[0.5rem] text-[0.85rem] text-text-alt font-normal bg-transparent outline-none p-[0.5rem] placeholder-tone-down" placeholder="Email..."/>
+                                    <input type="text" className="peer w-[100%] h-[100%] mr-[0.5rem] text-[0.85rem] text-tone-down font-normal bg-transparent outline-none p-[0.5rem] placeholder-tone-down" placeholder="Email..."/>
                                 </div>
                             </div>
                             <div className="flex flex-col gap-[0.25rem]">
                                 <span>PASSWORD</span>
                                 <div className="relative flex flex-row items-center rounded-[2px] shadow-small h-[2.5rem] border-solid border-field-border border-[1px] box-border border-transparent focus-within:border-highlight transition duration-[0.2s]">
                                     <i className="fi fi-sr-lock flex items-center text-highlight py-[0.5rem] pl-[0.5rem] text-[1.25rem]"/>
-                                    <input type="password" className="peer w-[100%] h-[100%] mr-[0.5rem] text-[0.85rem] text-text-alt font-normal bg-transparent outline-none p-[0.5rem] placeholder-tone-down" placeholder="Password..."/>
+                                    <input type="password" className="peer w-[100%] h-[100%] mr-[0.5rem] text-[0.85rem] text-tone-down font-normal bg-transparent outline-none p-[0.5rem] placeholder-tone-down" placeholder="Password..."/>
                                 </div>
                             </div>     
                             <div className="font-normal flex flex-row w-[100%] text-[1rem]">
