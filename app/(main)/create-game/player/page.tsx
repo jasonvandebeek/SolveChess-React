@@ -5,9 +5,8 @@ import Button from "@/components/button";
 import ColorSelector from "@/components/colorSelector";
 import Logo from "@/components/logo";
 import OverflowContainer from "@/components/overflowContainer";
-import SearchBar from "@/components/search/searchBar";
-import SearchHandler from "@/components/search/searchHandler";
-import { getUserData } from "@/utils/api";
+import SearchBar from "@/components/searchBar";
+import { getUserDataWithId } from "@/utils/api";
 import { getFriends } from "@/utils/friendlistApi";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -33,7 +32,7 @@ export default function Page() {
 
             const friends: Friend[] = [];
             response.forEach(async friendId => {
-                const friendResponse = await getUserData(friendId);
+                const friendResponse = await getUserDataWithId(friendId);
                 const image = await (await axios.get(friendResponse.profilePictureUrl)).data.blob();
                 
                 friends.push({
@@ -85,9 +84,7 @@ export default function Page() {
                 </div>
                 <div className="w-[17.5rem] flex flex-col gap-[1rem]">
                     <div>
-                        <SearchHandler handleSearchChange={setFilteredFriends} searchableObjects={friends}>
-                            <SearchBar property={"Username"}/>
-                        </SearchHandler>
+                        <SearchBar/>
                     </div>
                     {friends.length > 0 ? (
                         <OverflowContainer className="grow">

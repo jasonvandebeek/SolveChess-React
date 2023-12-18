@@ -3,6 +3,7 @@ import { Montserrat } from 'next/font/google'
 import '@/app/globals.css'
 import Account from '@/components/account'
 import "@flaticon/flaticon-uicons/css/all/all.css";
+import { UserProvider } from '@/components/userContext';
 
 export const montserrat = Montserrat({
 	subsets: ['latin'],
@@ -21,8 +22,10 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
 				<link rel='icon' href='/favicon.ico?v=2' type='icon' />
 			</head>
 			<body className={`${montserrat.className} bg-background`}>
-				<Account/>
-				{children}
+				<UserProvider>
+					<Account/>
+					{children}
+				</UserProvider>
 			</body>
 		</html>
 	)

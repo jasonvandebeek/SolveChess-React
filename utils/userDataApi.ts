@@ -3,9 +3,7 @@ import axios from "axios";
 
 const baseUrl = "https://api.solvechess.xyz";
 
-
-
-export const getUserData = async (userId: string): Promise<UserModel> => {
+export const getUserDataWithId = async (userId: string): Promise<UserModel> => {
     try {
         const endpoint = `${baseUrl}/users/${userId}`;
         const userDataResponse = await axios.get(endpoint, { withCredentials: true });
@@ -25,3 +23,23 @@ export const getUserData = async (userId: string): Promise<UserModel> => {
         throw error;
     }
 };
+
+export const getUserDataWithUsername = async (username: string): Promise<UserModel | null> => {
+    try {
+        const endpoint = `${baseUrl}/users?username=${username}`;
+        const userDataResponse = await axios.get(endpoint, { withCredentials: true });
+    
+        const userId = userDataResponse.data['userId'];
+        const rating = userDataResponse.data['rating'];
+        const profilePictureUrl = userDataResponse.data['profilePictureUrl'];
+    
+        return { 
+            userId: userId,
+            username: username, 
+            rating: rating,
+            profilePictureUrl: profilePictureUrl 
+        }
+    } catch(error) {
+        return null;
+    }
+}
