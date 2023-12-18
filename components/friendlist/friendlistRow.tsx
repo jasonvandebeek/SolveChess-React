@@ -6,9 +6,12 @@ interface Props {
     userIds: string[];
     searchQuery: string;
     renderItem: (friend: UserModel) => React.ReactNode;
+    title: string;
+    nonFoundMessage: string;
+    hasCount: boolean;
 }
 
-export default function FriendlistRow({ userIds, searchQuery, renderItem }:Props) {
+export default function FriendlistRow({ userIds, searchQuery, renderItem, title, nonFoundMessage, hasCount }:Props) {
     const [users, setUsers] = useState<UserModel[]>([]);
 
     useEffect(() => {
@@ -29,12 +32,12 @@ export default function FriendlistRow({ userIds, searchQuery, renderItem }:Props
     return (
         <>
             <div className="flex flex-col gap-[1rem] w-fit">
-                <span className="text-text font-bold text-[1.25rem]">My Friends ({filteredUsers.length})</span>
+                <span className="text-text font-bold text-[1.25rem]">{title} {hasCount && `(${filteredUsers.length})`}</span>
                 {filteredUsers.length > 0 ? (
                     <div className="flex flex-row gap-[1.5rem]">
                         {filteredUsers && filteredUsers.map(user => renderItem(user))}
                     </div>
-                ) : <span className="text-tone-down text-[1rem]">No users found.</span>}
+                ) : <span className="text-tone-down text-[1rem]">{nonFoundMessage}</span>}
             </div>
         </>  
     );

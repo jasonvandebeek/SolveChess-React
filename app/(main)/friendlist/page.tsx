@@ -37,7 +37,14 @@ export default function Page() {
                 </div>
                 <div className="flex flex-col gap-[2rem]">
                     <SearchRow searchQuery={search}/>
-                    <FriendlistRow searchQuery={search} userIds={friends} renderItem={(user: UserModel) => { return <FriendCard user={user}/> }}/>
+                    <FriendlistRow 
+                        searchQuery={search}
+                        userIds={friends}
+                        renderItem={(user: UserModel) => { return <FriendCard user={user} />; } } 
+                        title={"My Friends"} 
+                        nonFoundMessage={"No users found."} 
+                        hasCount={true}                        
+                    />
                 </div>
             </div>
         </> 
