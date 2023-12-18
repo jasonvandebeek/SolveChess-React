@@ -24,7 +24,6 @@ export default function Page() {
 
     return (
         <>
-            <Account/>
             <div className="flex flex-col items-center h-[100vh] justify-center overflow-hidden">
                 {state === 0 ? (
                     <div className="flex flex-col items-center mt-[-3rem] select-none">

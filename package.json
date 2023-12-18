@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@flaticon/flaticon-uicons": "^3.0.0",
     "@microsoft/signalr": "^7.0.12",
     "axios": "^1.6.0",
     "next": "^14.0.0",

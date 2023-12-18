@@ -4,22 +4,55 @@ import Account from "@/components/account";
 import Button from "@/components/button";
 import ColorSelector from "@/components/colorSelector";
 import Logo from "@/components/logo";
+import OverflowContainer from "@/components/overflowContainer";
 import SearchBar from "@/components/search/searchBar";
 import SearchHandler from "@/components/search/searchHandler";
-import { useState } from "react";
+import { getUserData } from "@/utils/api";
+import { getFriends } from "@/utils/friendlistApi";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+interface Friend {
+    Username: string;
+    Rating: string; 
+    Image: string;
+}
 
 export default function Page() {
     const [selectedColor, setSelectedColor] = useState("RANDOM");
+    const [friends, setFriends] = useState<Friend[]>([]);
+    const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
 
     const handleColorChange = (color: 'WHITE' | 'BLACK' | 'RANDOM') => {
         setSelectedColor(color);
     }
 
+    useEffect(() => {
+        const fetchFriends = async () => {
+            const response = await getFriends();
+
+            const friends: Friend[] = [];
+            response.forEach(async friendId => {
+                const friendResponse = await getUserData(friendId);
+                const image = await (await axios.get(friendResponse.profilePictureUrl)).data.blob();
+                
+                friends.push({
+                    Username: friendResponse.username,
+                    Rating: friendResponse.rating,
+                    Image: URL.createObjectURL(image)
+                });
+            });
+
+            setFriends(friends);
+        }
+
+        fetchFriends();
+    }, []);
+
     return (
         <>
             <Logo/>
-            <Account/>
-            <div className="flex flex-row gap-[9rem] pt-[16rem] w-fit mx-auto text-text font-bold">
+            <div className="flex flex-row gap-[9rem] pt-[14rem] w-fit mx-auto text-text font-bold">
                 <div className="flex flex-col gap-[3.75rem]">
                     <div className="flex flex-col gap-[1.25rem]">
                         <span className="text-[2rem]">Play vs</span>
@@ -52,13 +85,24 @@ export default function Page() {
                 </div>
                 <div className="w-[17.5rem] flex flex-col gap-[1rem]">
                     <div>
-                        <SearchHandler handleSearchChange={() => {}} searchableObjects={[]}>
-                            <SearchBar property={""}/>
+                        <SearchHandler handleSearchChange={setFilteredFriends} searchableObjects={friends}>
+                            <SearchBar property={"Username"}/>
                         </SearchHandler>
                     </div>
-                    <div className="grow">
-
-                    </div>
+                    {friends.length > 0 ? (
+                        <OverflowContainer className="grow">
+                            {filteredFriends.map(friend => (
+                                <div className="flex flex-col items-center">
+                                    <img src={friend.Image} className="rounded-[2px] w-[2rem] aspect-[1/1] shadow-small"/>
+                                    <span className="ml-[0.5rem] mr-[0.25rem]">{friend.Username}</span>
+                                    <span>{`(${friend.Rating})`}</span>
+                                </div>
+                            ))}
+                        </OverflowContainer>
+                    ) : (
+                        <span className="w-[100%] text-center">No friends found!</span>
+                    )}
+                    
                 </div>
             </div>
         </>

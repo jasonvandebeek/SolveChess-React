@@ -16,7 +16,9 @@ const config: Config = {
         'tone-down': '#AEB3C2',
         'highlight': '#4687E9',
         'background': '#181A20',
-        'container': '#1B1E24'
+        'container': '#1B1E24',
+        'container-alt': '#272C35',
+        'error': '#FF3434'
       },
       boxShadow: {
         'small': '1px 1px 2px 1px rgba(0, 0, 0, 0.25)',
