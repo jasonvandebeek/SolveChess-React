@@ -3,5 +3,5 @@ import * as userDataApi from './userDataApi';
 import * as friendlistApi from './friendlistApi';
 
 export const { getUserId, googleLogin } = authApi;
-export const { GetUserDataWithId: getUserDataWithId, GetUserDataWithUsername: getUserDataWithUsername } = userDataApi;
-export const { getFriends } = friendlistApi;
+export const { getUserDataWithId, getUserDataWithUsername } = userDataApi;
+export const { getFriends, getFriendRequests, getSentRequests } = friendlistApi;

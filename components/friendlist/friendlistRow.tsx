@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import UserModel from "@/models/userModel";
 import { getUserDataWithId } from "@/utils/api";
+import Scroller from "./scroller";
 
 interface Props {
     userIds: string[];
@@ -8,37 +9,38 @@ interface Props {
     renderItem: (friend: UserModel) => React.ReactNode;
     title: string;
     nonFoundMessage: string;
-    hasCount: boolean;
+    hideOnNone?: boolean;
 }
 
-export default function FriendlistRow({ userIds, searchQuery, renderItem, title, nonFoundMessage, hasCount }:Props) {
+export default function FriendlistRow({ userIds, searchQuery, renderItem, title, nonFoundMessage, hideOnNone = false }:Props) {
     const [users, setUsers] = useState<UserModel[]>([]);
 
     useEffect(() => {
         const fetchFriends = async () => {
+            const usersArray = await Promise.all(userIds.map(async userId => {
+                return await getUserDataWithId(userId);
+            }));
     
-            userIds.forEach(async userId => {
-                const user = await getUserDataWithId(userId);
-                
-                setUsers((prevUsers) => [...prevUsers, user]);
-            });
+            setUsers(usersArray);
         }
-
+    
         fetchFriends();
-    }, []);
+    }, [userIds]);
 
     const filteredUsers = users.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return (
         <>
-            <div className="flex flex-col gap-[1rem] w-fit">
-                <span className="text-text font-bold text-[1.25rem]">{title} {hasCount && `(${filteredUsers.length})`}</span>
-                {filteredUsers.length > 0 ? (
-                    <div className="flex flex-row gap-[1.5rem]">
-                        {filteredUsers && filteredUsers.map(user => renderItem(user))}
-                    </div>
-                ) : <span className="text-tone-down text-[1rem]">{nonFoundMessage}</span>}
-            </div>
+            {!(hideOnNone && userIds.length == 0) &&
+                <div className="flex flex-col gap-[0.75rem] w-[100%] mb-[0.5rem]">
+                    <span className="text-text font-bold text-[1rem]">{title} {`(${filteredUsers.length})`}</span>
+                    {filteredUsers.length > 0 ? (
+                        <Scroller>
+                            {filteredUsers && filteredUsers.map(user => renderItem(user))}
+                        </Scroller>
+                    ) : <span className="mt-[-0.2rem] text-tone-down text-[0.8em]">{nonFoundMessage}</span>}
+                </div>
+            }
         </>  
     );
 
