@@ -10,7 +10,7 @@ export default function SearchBar({ onInputChange = () => {}, onEnterPress = () 
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
-        onInputChange!(searchTerm);
+        onInputChange(e.target.value);
     }
 
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {

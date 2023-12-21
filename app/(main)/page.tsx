@@ -1,17 +1,24 @@
 "use client"
 
-import { useEffect, useState } from "react";
-import Account from "@/components/account";
+import { useState } from "react";
 import GameCard from "@/components/gameCard";
 import Logo from "@/components/logo";
 import './animations.css';
 import Button from "@/components/button";
+import { useUser } from "@/components/userContext";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+    const { user } = useUser();
+    const router = useRouter();
+
     const [state, setState] = useState(0);
     const [wait, setWait] = useState(false);
 
     const handlePlayButtonClick = () => {
+        if(!user)
+            router.push("/login");
+
         if (!wait) {
             setWait(true);
 

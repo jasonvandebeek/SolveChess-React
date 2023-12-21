@@ -3,10 +3,11 @@ import { ReactNode } from "react";
 interface Props {
     className?: string;
     children?: ReactNode;
+    disabled?: boolean;
     onClick?: () => void;
 }
 
-export default function Button({ className, children, onClick }:Props) {
+export default function Button({ className, children, onClick, disabled = false }:Props) {
 
     return (
         <button className={
@@ -23,6 +24,7 @@ export default function Button({ className, children, onClick }:Props) {
             disabled:bg-tone-down
             ${className}`
         } 
+        disabled={disabled}
         onClick={onClick}>
             {children}
         </button>
