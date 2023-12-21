@@ -20,12 +20,16 @@ export const UserProvider = ({ children }: Props) => {
 
 	useEffect(() => {
 		const fetchUser = async () => {
-			const userId = await getUserId();
-			if(userId == null)
-				return;
+			try {
+				const userId = await getUserId();
+				if(userId == null)
+					return;
 
-			const user = await getUserDataWithId(userId);
-			setUser(user);
+				const user = await getUserDataWithId(userId);
+				setUser(user);
+			} catch(exception) {
+				//handle error
+			}
 		};
 
 		fetchUser();

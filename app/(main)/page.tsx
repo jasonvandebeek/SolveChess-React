@@ -27,7 +27,7 @@ export default function Page() {
             <div className="flex flex-col items-center h-[100vh] justify-center overflow-hidden">
                 {state === 0 ? (
                     <div className="flex flex-col items-center mt-[-3rem] select-none">
-                        <span className={`text-text font-extrabold font-montserrat-alt text-[5rem] drop-shadow-large ${wait && 'animate-fall-down-right-delayed'}`}>SOLVECHESS.AI</span>
+                        <span className={`text-text font-extrabold font-montserrat-alt text-[5rem] drop-shadow-large ${wait && 'animate-fall-down-right-delayed'}`}>SOLVECHESS</span>
                         <Button className={`px-[3rem] text-[1.5rem] ${wait && 'animate-fall-down-left'}`} onClick={handlePlayButtonClick}>Play</Button>
                     </div>
                 ) : (

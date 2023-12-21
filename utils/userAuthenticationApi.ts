@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const baseUrl = "https://api.solvechess.xyz";
+const baseUrl = "https://api.solvechess.xyz/auth";
 
 export const getUserId = async (): Promise<string | null> => {
     try {
-        const endpoint = `${baseUrl}/auth/userId`;
+        const endpoint = `${baseUrl}/userId`;
         const userDataResponse = await axios.get(endpoint, { withCredentials: true });
 
         const userId = userDataResponse.data !== "" ? userDataResponse.data : null;
@@ -18,17 +18,20 @@ export const getUserId = async (): Promise<string | null> => {
 
 export const googleLogin = async (accessToken: string) => {
     try {
-        await axios.post(`${baseUrl}/auth/google-login`, 
-            { accessToken }, 
-            {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
+        const endpoint = `${baseUrl}/google-login`;
+        await axios.post(endpoint, { accessToken }, { withCredentials: true });
     } catch(error) {
         console.error('Error authenticating with google:', error);
+        throw error;
+    }
+}
+
+export const logout = async () => {
+    try {
+        const endpoint = `${baseUrl}/logout`;
+        await axios.post(endpoint, null, { withCredentials: true });
+    } catch(error) {
+        console.error('Error logging out:', error);
         throw error;
     }
 }

@@ -9,7 +9,8 @@ import Logo from "@/components/logo";
 import SearchBar from "@/components/searchBar";
 import { useUser } from "@/components/userContext";
 import UserModel from "@/models/userModel";
-import { getFriendRequests, getFriends, getSentRequests } from "@/utils/api";
+import { acceptFriendRequest, addFriend, denyFriendRequest, getFriendRequests, getFriends, getSentFriendRequests, removeFriend } from "@/utils/api";
+import { revokeFriendRequest } from "@/utils/friendlistApi";
 import { useEffect, useState } from "react";
 
 export default function Page() {
@@ -25,9 +26,8 @@ export default function Page() {
     useEffect(() => {
         const fetchData = async () => {
             setFriends(await getFriends());
-            //setRequests(await getFriendRequests());
-            setSentRequests(await getSentRequests());
-            setRequests(["1","1","1","1","1","1"])
+            setRequests(await getFriendRequests());
+            setSentRequests(await getSentFriendRequests());
         };
 
         fetchData();
@@ -44,31 +44,61 @@ export default function Page() {
         setIgnoredIds(ignoredIds);
     }, [friends, requests, sentRequests]);
 
-    const handleRemove = (userId: string) => {
-        const updatedFriends = friends.filter(friend => friend !== userId);
-        setFriends(updatedFriends);
+    const handleRemove = async (userId: string) => {
+        try {
+            await removeFriend(userId);
+
+            const updatedFriends = friends.filter(friend => friend !== userId);
+            setFriends(updatedFriends);
+        } catch(exception) {
+            //handle error
+        }
     }
 
-    const handleAddFriend = (userId: string) => {
-        setRequests((prevRequests) => [...prevRequests, userId]);
-        setSearch("");
+    const handleAddFriend = async (userId: string) => {
+        try {
+            await addFriend(userId);
+
+            setSentRequests((prevRequests) => [...prevRequests, userId]);
+            setSearch("");
+        } catch(exception) {
+            //handle error
+        }
     }
 
-    const handleAccept = (userId: string) => {
-        const updatedRequests = requests.filter(request => request !== userId);
-        setRequests(updatedRequests);
+    const handleAccept = async (userId: string) => {
+        try {
+            await acceptFriendRequest(userId);
 
-        setFriends((prevFriends) => [...prevFriends, userId]);
+            const updatedRequests = requests.filter(request => request !== userId);
+            setRequests(updatedRequests);
+    
+            setFriends((prevFriends) => [...prevFriends, userId]);
+        } catch(exception) {
+            //handle error
+        }
     }
 
-    const handleDeny = (userId: string) => {
-        const updatedRequests = requests.filter(request => request !== userId);
-        setRequests(updatedRequests);
+    const handleDeny = async (userId: string) => {
+        try {
+            await denyFriendRequest(userId);
+
+            const updatedRequests = requests.filter(request => request !== userId);
+            setRequests(updatedRequests);
+        } catch(exception) {
+            //handle error
+        }
     }
 
-    const handleCancel = (userId: string) => {
-        const updatedRequests = sentRequests.filter(request => request !== userId);
-        setSentRequests(updatedRequests);
+    const handleCancel = async (userId: string) => {
+        try {
+            await revokeFriendRequest(userId);
+
+            const updatedRequests = sentRequests.filter(request => request !== userId);
+            setSentRequests(updatedRequests);
+        } catch(exception) {
+            //handle error
+        }
     }
 
     return (
@@ -90,7 +120,7 @@ export default function Page() {
                     <FriendlistRow 
                         searchQuery={search}
                         userIds={requests}
-                        renderItem={(user: UserModel) => { return <RequestCard key={user.userId} user={user} onAcceptClick={handleAccept} onDenyClick={handleDeny}/>; } } 
+                        renderItem={(user: UserModel) => { return (<RequestCard key={user.userId} user={user} onAcceptClick={handleAccept} onDenyClick={handleDeny}/>); } } 
                         title={"Friend Requests"} 
                         nonFoundMessage={"No friend requests found."} 
                         hideOnNone={true}                        

@@ -1,3 +1,4 @@
+import DynamicImage from "@/components/dynamicImage";
 import UserModel from "@/models/userModel";
 
 interface Props {
@@ -8,8 +9,8 @@ interface Props {
 export default function FriendCard({ user, onRemoveClick }:Props) {
     return (
         <div className="group flex flex-col text-center w-[8rem] text-[0.85rem]">
-            <img src={user.profilePictureUrl} className="mx-auto w-[4.5rem] aspect-[1/1] rounded-[0.125rem] shadow-small"/>
-            <div className="flex flex-col mt-[0.75rem] mb-[0.25rem] ">
+            <DynamicImage src={user.profilePictureUrl} fallbackSrc="/images/defaultProfile.png" className="mx-auto w-[4.5rem] aspect-[1/1] rounded-[0.125rem] shadow-small bg-container"/>
+            <div className="flex flex-col mt-[0.75rem] mb-[0.25rem]">
                 <span className="font-bold text-text truncate ">{user.username}</span>
                 <span className="text-[0.85em] text-tone-down mt-[-0.125rem]">Rating: {user.rating}</span>
             </div>
