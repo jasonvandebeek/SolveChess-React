@@ -12,6 +12,7 @@
     "@flaticon/flaticon-uicons": "^3.0.0",
     "@microsoft/signalr": "^7.0.12",
     "axios": "^1.6.0",
+    "linq-typescript": "^1.0.251",
     "next": "^14.0.0",
     "react": "^18",
     "react-dnd": "^16.0.1",

@@ -2,6 +2,6 @@
 export default interface UserModel {
     userId: string;
     username: string;
-    rating: string;
+    rating: number;
     profilePictureUrl: string;
 }

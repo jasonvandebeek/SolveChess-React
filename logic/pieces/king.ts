@@ -1,52 +1,97 @@
-import Board from '../board';
-import PieceType from '../types/PieceType';
+import PieceType from '../attributes/PieceType';
+import Side from '../attributes/Side';
+import { Board } from "../board";
 import Square from '../utilities/square';
-import PieceBase from './pieceBase';
+import { PieceBase } from './pieceBase';
 
-export default class King extends PieceBase {
+export class King extends PieceBase {
+	
+    public readonly type: PieceType = PieceType.KING;
 
-	protected _type: PieceType = "king";
+    constructor(side: Side) {
+        super(side, 'k');
+    }
 
-	//TODO: check for opponent check on this
-	GetPossibleMoves(board: Board): Square[] {
-		return this.FilterOutIllegalMoves(this.KingMoves(board), board);
-	}
+    public getPossibleMoves(board: Board): Square[] {
+        const moves = this.kingMoves(board).concat(this.castlingMoves(board));
 
-	IsChecked(board: Board): boolean {
-		if(this.AttackingPieceOfType(board, this.PawnMoves(board), 'pawn'))
-			return true;
+        return this.filterOutIllegalMoves(moves, board);
+    }
 
-		if(this.AttackingPieceOfType(board, this.RookMoves(board), 'rook'))
-			return true;
+    private castlingMoves(board: Board): Square[] {
+        if (this.side === Side.WHITE) {
+            return this.whiteSideCastlingMoves(board);
+        } else {
+            return this.blackSideCastlingMoves(board);
+        }
+    }
 
-		if(this.AttackingPieceOfType(board, this.KnightMoves(board), 'knight'))
-			return true;
+    private whiteSideCastlingMoves(board: Board): Square[] {
+        if (!this.isAtStartingPosition(board)) return [];
 
-		if(this.AttackingPieceOfType(board, this.BishopMoves(board), 'bishop'))
-			return true;
+        const result: Square[] = [];
 
-		if(this.AttackingPieceOfType(board, this.QueenMoves(board), 'queen'))
-			return true;
+        if (board.castlingRightWhiteKingSide && this.kingSideClear(board)) {
+            result.push(new Square(7, 6));
+        }
 
-		if(this.AttackingPieceOfType(board, this.KingMoves(board), 'king'))
-			return true;
+        if (board.castlingRightWhiteQueenSide && this.queenSideClear(board)) {
+            result.push(new Square(7, 2));
+        }
 
-		return false;
-	}
+        return result;
+    }
 
-	private AttackingPieceOfType(board: Board, moves: Square[], type: PieceType): boolean {
-		let found = false;
+    private isAtStartingPosition(board: Board): boolean {
+        const square = board.getSquareOfPiece(this);
+        return (square.equals(new Square(1, 5)) && this.side === Side.WHITE) || (square.equals(new Square(7, 5)) && this.side === Side.BLACK);
+    }
 
-		for (const move of moves) {
-			const target = board.GetPieceAt(move);
+    private queenSideClear(board: Board): boolean {
+        const moves = this.traceMoves(board, 0, -1);
+        return moves.length === 3;
+    }
 
-			if (target != null && target.Type == type) {
-				found = true;
-				break;
-			}
-		}
+    private kingSideClear(board: Board): boolean {
+        const moves = this.traceMoves(board, 0, 1);
+        return moves.length === 2;
+    }
 
-		return found;
-	}
+    private blackSideCastlingMoves(board: Board): Square[] {
+        if (!this.isAtStartingPosition(board)) return [];
 
+        const result: Square[] = [];
+
+        if (board.castlingRightBlackKingSide && this.kingSideClear(board)) {
+            result.push(new Square(0, 6));
+        }
+
+        if (board.castlingRightBlackQueenSide && this.queenSideClear(board)) {
+            result.push(new Square(0, 2));
+        }
+
+        return result;
+    }
+
+    public isChecked(board: Board): boolean {
+        if (this.attackingPieceOfType(board, this.pawnMoves(board), PieceType.PAWN)) return true;
+        if (this.attackingPieceOfType(board, this.rookMoves(board), PieceType.ROOK)) return true;
+        if (this.attackingPieceOfType(board, this.knightMoves(board), PieceType.KNIGHT)) return true;
+        if (this.attackingPieceOfType(board, this.bishopMoves(board), PieceType.BISHOP)) return true;
+        if (this.attackingPieceOfType(board, this.queenMoves(board), PieceType.QUEEN)) return true;
+        if (this.attackingPieceOfType(board, this.kingMoves(board), PieceType.KING)) return true;
+
+        return false;
+    }
+
+    private attackingPieceOfType(board: Board, moves: Square[], type: PieceType): boolean {
+        for (const move of moves) {
+            const target = board.getPieceAt(move);
+            if (target !== null && target.type === type) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

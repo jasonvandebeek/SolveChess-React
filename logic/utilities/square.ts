@@ -1,12 +1,12 @@
 
 export default class Square {
     private readonly _file: number;
-    get File(): number {
+    get file(): number {
         return this._file;
     }
 
     private readonly _rank: number;
-    get Rank(): number {
+    get rank(): number {
         return this._rank;
     }
 
@@ -18,17 +18,17 @@ export default class Square {
         this._file = file;
     }
 
-    Equals(obj: any): boolean {
+    equals(obj: any): boolean {
         if (obj == null || this.constructor !== obj.constructor) {
             return false;
         }
 
         const other = obj as Square;
         
-        return this.HashCode() === other.HashCode();
+        return this.hashCode() === other.hashCode();
     }
 
-    HashCode(): number {
-        return this.Rank * 10 + this.File;
+    hashCode(): number {
+        return this.rank * 10 + this.file;
     }
 }

@@ -1,15 +1,19 @@
-import PieceBase from "./pieceBase";
+import PieceType from "../attributes/PieceType";
+import Side from "../attributes/Side";
 import Board from "../board";
 import Square from "../utilities/square";
-import PieceType from "../types/PieceType";
+import { PieceBase } from "./pieceBase";
 
-export default class Knight extends PieceBase {
+export class Knight extends PieceBase {
 
-	protected _type: PieceType = "knight";
+    public readonly type: PieceType = PieceType.KNIGHT;
 
-	//TODO: check for opponent check on king
-	GetPossibleMoves(board: Board): Square[] {
-		return this.FilterOutIllegalMoves(this.KnightMoves(board), board);
-	}
+    constructor(side: Side) {
+        super(side, 'n');
+    }
+
+    public getPossibleMoves(board: Board): Square[] {
+        return this.filterOutIllegalMoves(this.knightMoves(board), board);
+    }
 
 }

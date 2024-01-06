@@ -1,14 +1,17 @@
-import PieceBase from './pieceBase';
-import Board from '../board';
-import Square from '../utilities/square';
-import PieceType from '../types/PieceType';
+import PieceType from "../attributes/PieceType";
+import Side from "../attributes/Side";
+import Board from "../board";
+import Square from "../utilities/square";
+import { PieceBase } from "./pieceBase";
 
-export default class Queen extends PieceBase {
+export class Queen extends PieceBase {
+    public readonly type: PieceType = PieceType.QUEEN;
 
-	protected _type: PieceType = "queen";
+    constructor(side: Side) {
+        super(side, 'q');
+    }
 
-	GetPossibleMoves(board: Board): Square[] {
-		return this.FilterOutIllegalMoves(this.QueenMoves(board), board);
-	}
-
+    public getPossibleMoves(board: Board): Square[] {
+        return this.filterOutIllegalMoves(this.queenMoves(board), board);
+    }
 }

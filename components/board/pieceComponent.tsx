@@ -1,8 +1,8 @@
 import './board.css';
 import { useDrag } from "react-dnd"; 
 import Square from '@/logic/utilities/square';
-import Side from '@/logic/types/Side';
-import PieceType from '@/logic/types/PieceType';
+import Side from '@/logic/attributes/Side';
+import PieceType from '@/logic/attributes/PieceType';
 
 type Props = {
     type: PieceType;
@@ -18,6 +18,6 @@ export default function PieceComponent({ type, side, square, canDrag }:Props) {
     }));
 
     return (
-        <div ref={canDrag ? drag : null} className={`piece ${type} ${side} h-[70%] aspect-[1/1]`}/>
+        <div ref={canDrag ? drag : null} className={`piece ${type.toString().toLowerCase()} ${side.toString().toLowerCase()} h-[70%] aspect-[1/1]`}/>
     );
 }

@@ -3,51 +3,59 @@
 import SquareComponent from './squareComponent';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import Board from '@/logic/board';
+import { Board } from '@/logic/board';
 import PieceComponent from './pieceComponent';
 import { useEffect, useState } from 'react';
 import Square from '@/logic/utilities/square';
-import Side from '@/logic/types/Side';
+import Side from '@/logic/attributes/Side';
 import PlayerComponent from './playerComponent';
-import * as signalR from '@microsoft/signalr';
-import axios from 'axios';
+import { playMove } from '@/utils/api';
+import { getConnection } from '@/utils/websocket';
+import UserModel from '@/models/userModel';
+import { getUserDataWithId } from '@/utils/userDataApi';
 
 type Props = {
     gameId: string;
-    fen?: string;
+    board: Board;
+    playerId: string;
+    opponentId: string;
     side: Side;
-    sideToMove: Side;
-};
+    initialSideToMove: Side;
+}
 
-export default function BoardComponent({ gameId, fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', side = 'white', sideToMove }: Props) {
-    const board = new Board(fen);
-    const [boardArray, setBoardArray] = useState(board.GetBoardArray());
-
-    const [_sideToMove, setSideToMove] = useState(sideToMove);
+export default function BoardComponent({ gameId, board, playerId, opponentId, side, initialSideToMove }: Props) {
+    const [player, setPlayer] = useState<UserModel>();
+    const [opponent, setOpponent] = useState<UserModel>();
+    const [boardArray, setBoardArray] = useState(board.boardArray);
+    const [sideToMove, setSideToMove] = useState(initialSideToMove);
 
     useEffect(() => {
-        const Connection = new signalR.HubConnectionBuilder()
-            .withUrl('https://localhost:7001/api/websocket')
-            .configureLogging(signalR.LogLevel.Information)
-            .withAutomaticReconnect()
-            .build();
-    
-        Connection.start().then(() => {
-            Connection.invoke("JoinGame", gameId);
+        const fetchPlayerData = async () => {
+            setPlayer(await getUserDataWithId(playerId));
+            setOpponent(await getUserDataWithId(opponentId));
+        }
 
-            Connection.on("ReceiveMove", move => {
-                console.log('recieve');
+        fetchPlayerData();
+    }, [playerId, opponentId]);
+
+    useEffect(() => {
+        const connection = getConnection();
     
+        connection.start().then(() => {
+            connection.invoke("JoinGame", gameId);
+
+            connection.on("ReceiveMove", move => {
+                console.log(move);
+
                 var from = new Square(move.from.rank, move.from.file);
                 var to = new Square(move.to.rank, move.to.file);
     
-                board.MovePiece(from, to);
-                const newBoardArray = board.GetBoardArray();
+                board.movePiece(from, to);
+                const newBoardArray = board.boardArray;
                 setBoardArray([...newBoardArray]);
-    
-                //setSideToMove('white' == _sideToMove ? 'black' : 'white');
+
+                setSideToMove(move.side === "WHITE" ? Side.BLACK : Side.WHITE);
             });
-    
         });
     }, []);
 
@@ -55,60 +63,42 @@ export default function BoardComponent({ gameId, fen = 'rnbqkbnr/pppppppp/8/8/8/
         if (!CanMove(from, to))
             return;
 
-        console.log('move');
-
-        const url = `https://localhost:7011/api/Chess/MakeMove?gameId=${gameId}`;
-        const data = { 
-            from: { 
-                rank: from.Rank, 
-                file: from.File 
-            }, 
-            to: { 
-                rank: to.Rank, 
-                file: to.File 
-            } 
-        };
-
-        axios.post(url, data, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        playMove(gameId, from, to);
     }
 
     const CanMove = (from: Square, to: Square) => {
-        const piece = board.GetPieceAt(from);
+        const piece = board.getPieceAt(from);
         if (piece === null)
             return false;
 
-        return board.CanPieceMoveTo(piece, to);
+        return piece.canMoveToSquare(to, board);
     }
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <PlayerComponent direction='rtl' username='Username' imageUrl='/' rating={100} pieces='♟︎♟︎ ♞' diff='' />
+            {opponent && <PlayerComponent direction='rtl' username={opponent.username} imageUrl={opponent.profilePictureUrl} rating={opponent.rating} pieces='' diff=''/>}
 
-            <div className={`flex ${side === 'white' ? "flex-wrap" : "flex-wrap-reverse"} w-[100%] rounded overflow-hidden text-background select-none shadow-normal`}>
+            <div className={`flex ${side === Side.WHITE ? "flex-wrap" : "flex-wrap-reverse"} w-[100%] rounded overflow-hidden text-background select-none shadow-normal`}>
                 {boardArray.map((rank, rankIndex) => (
-                    <div key={`rank-${rankIndex}`} className={`flex w-[100%] ${side === 'white' ? "flex-row" : "flex-row-reverse"}`}>
+                    <div key={`rank-${rankIndex}`} className={`flex w-[100%] ${Side.WHITE ? "flex-row" : "flex-row-reverse"}`}>
                         {rank.map((piece, fileIndex) => (
                             <SquareComponent
                                 square={new Square(rankIndex, fileIndex)}
-                                hasFileNotation={rankIndex === 0 && side === 'black' || rankIndex === 7 && side === 'white'}
-                                hasRankNotation={fileIndex === 7 && side === 'black' || fileIndex === 0 && side === 'white'}
+                                hasFileNotation={rankIndex === 0 && side === Side.BLACK || rankIndex === 7 && side === Side.WHITE}
+                                hasRankNotation={fileIndex === 0}
                                 onDrop={MovePiece}
                                 className='w-[calc(100%/8)]'
                                 key={`square-${rankIndex}-${fileIndex}`}
                                 canMove={CanMove}
                             >
-                                {piece && <PieceComponent type={piece.Type} side={piece.Side} square={new Square(rankIndex, fileIndex)} canDrag={piece.Side === side && _sideToMove === side} />}
+                                {piece && <PieceComponent type={piece.type} side={piece.side} square={new Square(rankIndex, fileIndex)} canDrag={piece.side === side && sideToMove === side} />}
                             </SquareComponent>
                         ))}
                     </div>
                 ))}
             </div>
 
-            <PlayerComponent direction='ltr' username='Username' imageUrl='/' rating={100} pieces='♟︎♟︎ ♞' diff='+1' />
+            {player && <PlayerComponent direction='ltr' username={player.username} imageUrl={player.profilePictureUrl} rating={player.rating} pieces='' diff=''/>}
         </DndProvider>
     );
 }

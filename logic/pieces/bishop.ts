@@ -1,15 +1,18 @@
-import Board from '../board';
-import PieceType from '../types/PieceType';
-import Square from '../utilities/square';
-import PieceBase from './pieceBase';
+import PieceType from "../attributes/PieceType";
+import Side from "../attributes/Side";
+import Board from "../board";
+import Square from "../utilities/square";
+import { PieceBase } from "./pieceBase";
 
-export default class Bishop extends PieceBase {
+export class Bishop extends PieceBase {
+	
+    public readonly type: PieceType = PieceType.BISHOP;
 
-	protected _type: PieceType = "bishop";
+    constructor(side: Side) {
+        super(side, 'b');
+    }
 
-	//TODO: check for opponent check on king
-	GetPossibleMoves(board: Board): Square[] {
-		return this.FilterOutIllegalMoves(this.BishopMoves(board), board);
-	}
-
+    public getPossibleMoves(board: Board): Square[] {
+        return this.filterOutIllegalMoves(this.bishopMoves(board), board);
+    }
 }
