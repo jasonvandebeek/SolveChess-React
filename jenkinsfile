@@ -12,49 +12,5 @@ pipeline {
                 }
             }
         }
-		stage('Setup Testing Environment') {
-			steps {
-				script {
-				}
-			}
-		}
-		stage('Start Testing Environment') {
-			steps {
-				script {
-				}
-			}
-		}
-		stage('Run E2E Tests') {
-			steps {
-				script {
-				}
-			}
-		}
-		stage('SonarQube Analysis') {
-			steps {
-				script {
-					def scannerHome = tool 'SonarScanner';
-					withSonarQubeEnv() {
-						sh "${scannerHome}/bin/sonar-scanner"
-					}
-				}
-			}
-		}
-		stage('Build Docker Image') {
-			steps {
-				script {
-					dockerImage = docker.build "${dockerRegistry}:latest"
-				}
-			}
-		}
-        stage('Publish to DockerHub') {
-            steps {
-                script {
-                    docker.withRegistry('', dockerRegistryCredential) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
     }
 }
