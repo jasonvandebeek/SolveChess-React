@@ -8,10 +8,9 @@ RUN npm run build
 
 FROM node:18-alpine as runner
 WORKDIR /wrkdir
-COPY --from=builder /wrkdir/package.json .
-COPY --from=builder /wrkdir/package-lock.json .
-COPY --from=builder /wrkdir/next.config.js ./
-COPY --from=builder /wrkdir/public ./public
-COPY --from=builder /wrkdir/.next/static ./.next/static
+COPY --from=BUILD_IMAGE /app/package.json ./package.json
+COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
+COPY --from=BUILD_IMAGE /app/.next ./.next
+COPY --from=BUILD_IMAGE /app/public ./public
 EXPOSE 3000
 ENTRYPOINT ["npm", "start"]
