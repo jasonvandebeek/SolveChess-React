@@ -6,18 +6,12 @@
     "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "e2e:chrome": "cypress run --browser chrome"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/uuid": "^9.0.6",
     "@flaticon/flaticon-uicons": "^3.0.0",
     "@microsoft/signalr": "^7.0.12",
     "axios": "^1.6.0",
-    "linq-typescript": "^1.0.251",
     "next": "^14.0.0",
     "react": "^18",
     "react-dnd": "^16.0.1",

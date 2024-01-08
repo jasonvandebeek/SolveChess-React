@@ -55,7 +55,7 @@ export default function Page() {
                             </div>
                         </div>
                         <button className="bg-highlight rounded-[2px] text-text shadow-small w-[100%] h-[2.5rem] hover:shadow-normal hover:scale-[1.05] transition duration-[0.2s]">LOGIN</button> 
-                        <div className="font-normal text-[0.85rem]"><span>Don't have an account?</span> <a href="/signup"><span className="text-highlight cursor-pointer select-none"><u>Sign Up</u></span></a></div>
+                        <div className="font-normal text-[0.85rem]"><span>Don&apos;t have an account?</span> <a href="/signup"><span className="text-highlight cursor-pointer select-none"><u>Sign Up</u></span></a></div>
                     </div>
                 </div>
             </div>

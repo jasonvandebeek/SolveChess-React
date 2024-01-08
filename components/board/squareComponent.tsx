@@ -11,7 +11,7 @@ type Props = {
     canMove: (from: Square, to: Square) => boolean;
 };
 
-export default function squareComponent({ square, hasFileNotation = false, hasRankNotation = false, children, onDrop, className, canMove}:Props) {
+export default function SquareComponent({ square, hasFileNotation = false, hasRankNotation = false, children, onDrop, className, canMove}:Props) {
     const [{ isOver, canDrop }, drop] = useDrop(() => ({
         accept: "piece",
         drop: (pieceSquare: Square) => onDrop(pieceSquare, square),
