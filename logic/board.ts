@@ -190,10 +190,10 @@ export class ClonedBoard extends Board {
     }
 
     MovePiece(from: Square, to: Square): void {
-        super.MovePiece(from, to);
+        super.movePiece(from, to);
     }
 
     KingInCheck(side: Side): boolean {
-        return super.KingInCheck(side);
+        return super.kingInCheck(side);
     }
 }

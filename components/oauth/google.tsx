@@ -31,7 +31,7 @@ export default function GoogleOauthButton() {
     }
 
     return (
-        <div className="flex flex-row grow gap-[0.5rem] p-[0.5rem] shadow-small rounded-[2px] justify-center select-none cursor-pointer hover:shadow-normal hover:scale-[1.05] transition duration-[0.2s]" onClick={startGoogleAuthentication}>
+        <div id="google-oauth" className="flex flex-row grow gap-[0.5rem] p-[0.5rem] shadow-small rounded-[2px] justify-center select-none cursor-pointer hover:shadow-normal hover:scale-[1.05] transition duration-[0.2s]" onClick={startGoogleAuthentication}>
             <img src="/images/oauth-logo/Google_Logo.svg" className="w-[1.5rem] aspect-[1/1]"/>
             <span className="font-normal">Google</span>
         </div>

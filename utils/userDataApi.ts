@@ -1,11 +1,11 @@
 import UserModel from "@/models/userModel";
 import axios from "axios";
 
-const baseUrl = "https://api.solvechess.xyz";
+const baseUrl = `${process.env.API_ENDPOINT || "https://api.solvechess.xyz"}/users`;
 
 export const getUserDataWithId = async (userId: string): Promise<UserModel> => {
     try {
-        const endpoint = `${baseUrl}/users/${userId}`;
+        const endpoint = `${baseUrl}/${userId}`;
         const userDataResponse = await axios.get(endpoint, { withCredentials: true });
     
         const username = userDataResponse.data['username'];
@@ -26,7 +26,7 @@ export const getUserDataWithId = async (userId: string): Promise<UserModel> => {
 
 export const getUserDataWithUsername = async (username: string): Promise<UserModel | null> => {
     try {
-        const endpoint = `${baseUrl}/users?username=${username}`;
+        const endpoint = `${baseUrl}?username=${username}`;
         const userDataResponse = await axios.get(endpoint, { withCredentials: true });
     
         const userId = userDataResponse.data['userId'];

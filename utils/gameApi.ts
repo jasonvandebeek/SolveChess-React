@@ -4,7 +4,7 @@ import Square from "@/logic/utilities/square";
 import GameModel from "@/models/gameModel";
 import axios from "axios";
 
-const baseUrl = "https://api.solvechess.xyz/game";
+const baseUrl = `${process.env.API_ENDPOINT || "https://api.solvechess.xyz"}/game`;
 
 export const createGame = async (friendId: string, whitePlayerId?: string) => {
     try {

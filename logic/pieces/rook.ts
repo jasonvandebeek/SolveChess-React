@@ -1,6 +1,6 @@
 import PieceType from "../attributes/PieceType";
 import Side from "../attributes/Side";
-import Board from "../board";
+import { Board } from "../board";
 import Square from "../utilities/square";
 import { PieceBase } from "./pieceBase";
 

@@ -7,8 +7,24 @@ pipeline {
     stages {
 		stage('Install Dependencies') {
             steps {
-                script {
+                nodejs(nodeJSInstallationName: 'Node') {
                     sh 'npm install'
+                }
+            }
+        }
+		stage('Build Docker Image') {
+			steps {
+				script {
+					dockerImage = docker.build "${dockerRegistry}:latest"
+				}
+			}
+		}
+        stage('Publish to DockerHub') {
+            steps {
+                script {
+                    docker.withRegistry('', dockerRegistryCredential) {
+                        dockerImage.push()
+                    }
                 }
             }
         }

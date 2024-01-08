@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://api.solvechess.xyz/auth";
+const baseUrl = `${process.env.API_ENDPOINT || "https://api.solvechess.xyz"}/auth`;
 
 export const getUserId = async (): Promise<string | null> => {
     try {
