@@ -18,14 +18,24 @@ describe('play move', () => {
 				body: {
 					accessToken: access_token
 				}
+			}).then(() => {
+				cy.reload();
+				cy.wait(2000);
+				cy.get("#play-button").click();
+				cy.get("#create-game-player").click();
+				cy.get("#color-white").click();
+				cy.get("#friend-0").click();
+				cy.get("#create-game").click();
+				cy.wait(2000);
+				const dataTransfer = new DataTransfer();
+				cy.get("#E2 > .piece").trigger('dragstart', {
+					dataTransfer
+				});
+
+				cy.get("#E4").trigger('drop', {
+					dataTransfer
+				});
 			});
 		});
-		cy.reload();
-		cy.get("#play-button").click();
-		cy.wait(2000);
-		cy.get("#create-game-player").click();
-		cy.get("#color-white").click();
-		cy.get("#friend-1").click();
-		cy.get("#create-game").click();
 	});
 });

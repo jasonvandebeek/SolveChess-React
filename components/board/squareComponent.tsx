@@ -23,10 +23,14 @@ export default function SquareComponent({ square, hasFileNotation = false, hasRa
     }));
 
     const bgColor = (square.rank + square.file) % 2 === 0 ? 'bg-white' : 'bg-highlight'
+
+    const rankNotation = 8 - square.rank;
+    const fileNotation = String.fromCharCode(65 + square.file);
+
     return (
-        <div ref={drop} className={`relative ${bgColor} aspect-[1/1] flex justify-center items-center ${className}`}>
-            {hasRankNotation && <span key={`rank-${square.rank}`} className='font-bold absolute top-[3px] left-[3px] leading-[1]'>{8 - square.rank}</span>}
-            {hasFileNotation && <span key={`file-${square.file}`} className='font-bold absolute bottom-0 right-[4px] leading-[1]'>{String.fromCharCode(65 + square.file)}</span>}
+        <div id={`${fileNotation}${rankNotation}`} ref={drop} className={`relative ${bgColor} aspect-[1/1] flex justify-center items-center ${className}`}>
+            {hasRankNotation && <span key={`rank-${square.rank}`} className='font-bold absolute top-[3px] left-[3px] leading-[1]'>{rankNotation}</span>}
+            {hasFileNotation && <span key={`file-${square.file}`} className='font-bold absolute bottom-0 right-[4px] leading-[1]'>{fileNotation}</span>}
             {children}
             {(canDrop && children == undefined) && (
                 <div className="w-[30%] h-[30%] rounded-[100vw] bg-container bg-opacity-40"></div>
