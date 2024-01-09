@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 
 interface Props {
+    id?: string;
     color: 'WHITE' | 'BLACK' | 'RANDOM';
     isSelected: boolean;
     className?: string;
@@ -10,7 +11,7 @@ interface Props {
     onClick?: (color: 'WHITE' | 'BLACK' | 'RANDOM') => void;
 }
 
-export default function ColorSelector({ color, isSelected, className, children, onClick = () => {}, }:Props) {
+export default function ColorSelector({ id, color, isSelected, className, children, onClick = () => {}, }:Props) {
     return (
         <div className={
             `relative 
@@ -27,6 +28,7 @@ export default function ColorSelector({ color, isSelected, className, children, 
             text-center 
             ${isSelected ? "text-highlight" : "text-text-alt "}
             ${className}`}
+            id={id}
         onClick={() => { onClick(color) }}>
             {children}
         </div>

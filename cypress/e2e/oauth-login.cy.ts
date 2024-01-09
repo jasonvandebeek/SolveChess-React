@@ -1,4 +1,4 @@
-describe('google oauth login', () => {
+describe('play move', () => {
 	it('passes', () => {
 		cy.visit("https://localhost:3000")
 		cy.request({
@@ -21,5 +21,11 @@ describe('google oauth login', () => {
 			});
 		});
 		cy.reload();
+		cy.get("#play-button").click();
+		cy.wait(2000);
+		cy.get("#create-game-player").click();
+		cy.get("#color-white").click();
+		cy.get("#friend-1").click();
+		cy.get("#create-game").click();
 	});
 });

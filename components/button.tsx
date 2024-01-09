@@ -1,13 +1,14 @@
 import { ReactNode } from "react";
 
 interface Props {
+    id?: string;
     className?: string;
     children?: ReactNode;
     disabled?: boolean;
     onClick?: () => void;
 }
 
-export default function Button({ className, children, onClick, disabled = false }:Props) {
+export default function Button({ id, className, children, onClick, disabled = false }:Props) {
 
     return (
         <button className={
@@ -24,6 +25,7 @@ export default function Button({ className, children, onClick, disabled = false 
             disabled:bg-tone-down
             ${className}`
         } 
+        id={id}
         disabled={disabled}
         onClick={onClick}>
             {children}

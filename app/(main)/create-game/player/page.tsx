@@ -87,22 +87,22 @@ export default function Page() {
                     <div className="flex flex-col gap-[1.25rem]">
                         <span className="text-[2rem]">I play as</span>
                         <div className="flex flex-row gap-[1rem] items-center">
-                            <ColorSelector color="WHITE" isSelected={selectedColor === "WHITE"} className="bg-text" onClick={handleColorChange}>
+                            <ColorSelector id="color-white" color="WHITE" isSelected={selectedColor === "WHITE"} className="bg-text" onClick={handleColorChange}>
                                 <span className="font-chess-icons font-normal">♔</span>
                             </ColorSelector>
                             <span>OR</span>
-                            <ColorSelector color="RANDOM" isSelected={selectedColor === "RANDOM"} onClick={handleColorChange}>
+                            <ColorSelector id="color-random" color="RANDOM" isSelected={selectedColor === "RANDOM"} onClick={handleColorChange}>
                                 <span className="relative z-[1]">?</span>
                                 <div className="absolute h-[100%] w-[50%] bg-text rounded-l-[0.25rem] top-0"></div>
                                 <div className="absolute h-[100%] w-[50%] bg-container rounded-r-[0.25rem] right-0 top-0"></div>
                             </ColorSelector>
                             <span>OR</span>
-                            <ColorSelector color="BLACK" isSelected={selectedColor === "BLACK"} className="bg-container" onClick={handleColorChange}>
+                            <ColorSelector id="color-black" color="BLACK" isSelected={selectedColor === "BLACK"} className="bg-container" onClick={handleColorChange}>
                                 <span className="font-chess-icons font-normal">♔</span>
                             </ColorSelector>
                         </div>
                     </div>
-                    <Button className="text-[1.5rem] w-fit" disabled={selectedUser == null} onClick={handleCreateGame}>Create Game</Button>
+                    <Button id="create-game" className="text-[1.5rem] w-fit" disabled={selectedUser == null} onClick={handleCreateGame}>Create Game</Button>
                 </div>
                 <div className="w-[17.5rem] flex flex-col gap-[1rem]">
                     <div>
@@ -110,8 +110,8 @@ export default function Page() {
                     </div>
                     {friends.length > 0 ? (
                         <OverflowContainer className="grow">
-                            {filteredFriends.map(friend => (
-                                <div key={friend.userId} className="flex flex-row items-center hover:bg-container-alt rounded-[0.25rem] p-[0.25rem] transition duration-[0.3s] cursor-pointer select-none" onClick={() => setSelectedUser(friend)}>
+                            {filteredFriends.map((friend, index) => (
+                                <div id={`friend-${index}`} key={friend.userId} className="flex flex-row items-center hover:bg-container-alt rounded-[0.25rem] p-[0.25rem] transition duration-[0.3s] cursor-pointer select-none" onClick={() => setSelectedUser(friend)}>
                                     <DynamicImage src={friend.profilePictureUrl} fallbackSrc={"/images/defaultProfile.png"} className="rounded-[2px] w-[2rem] aspect-[1/1] shadow-small bg-container" />
                                     <span className="ml-[0.5rem] mr-[0.25rem] font-normal">{friend.username}</span>
                                     <span className="font-normal text-tone-down">{`(${friend.rating})`}</span>
