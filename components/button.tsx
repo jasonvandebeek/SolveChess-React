@@ -18,9 +18,9 @@ export default function Button({ id, className, children, onClick, disabled = fa
             py-[0.75rem] 
             px-[1.5rem] 
             rounded-[0.25rem] 
-            hover:scale-[1.1] 
+            hover:scale-[1.15] 
             transition 
-            duration-[0.2s] 
+            duration-[0.3s] 
             leading-none 
             disabled:bg-tone-down
             ${className}`

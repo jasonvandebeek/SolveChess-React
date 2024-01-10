@@ -115,7 +115,7 @@ export default function Page() {
                         userIds={friends}
                         renderItem={(user: UserModel) => { return <FriendCard key={user.userId} user={user} onRemoveClick={handleRemove}/>; } } 
                         title={"My Friends"} 
-                        nonFoundMessage={"No friends found."}                      
+                        nonFoundMessage={"No friends found. To add a friend use the searchbar!"}                      
                     />
                     <FriendlistRow 
                         searchQuery={search}
