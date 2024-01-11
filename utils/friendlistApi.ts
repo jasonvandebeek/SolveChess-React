@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = `${process.env.API_ENDPOINT || "https://api.solvechess.xyz"}/friendlist`;
+const baseUrl = `${process.env.API_ENDPOINT}/friendlist`;
 
 export const getFriends = async (): Promise<string[]> => {
     try {
