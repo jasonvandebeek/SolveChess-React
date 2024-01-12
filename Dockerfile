@@ -1,6 +1,8 @@
 FROM node:18-alpine as builder
 WORKDIR /wrkdir
 
+ENV NEXT_PUBLIC_API_ENDPOINT=https://api.solvechess.xyz
+
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
