@@ -1,7 +1,7 @@
 import UserModel from "@/models/userModel";
 import axios from "axios";
 
-const baseUrl = `${process.env.API_ENDPOINT}/users`;
+const baseUrl = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`;
 
 export const getUserDataWithId = async (userId: string): Promise<UserModel> => {
     try {

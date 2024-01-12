@@ -3,7 +3,6 @@ import './page.css'
 import GoogleOauthButton from "@/components/oauth/google";
 
 export default function Page() {
-    
     return (
         <div className="h-[100vh] w-[100vw] flex items-center">
             <div className="relative h-[calc(100vh-3rem)] aspect-[1180/1040] ml-[1.5rem] wrap">

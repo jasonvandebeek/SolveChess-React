@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import '@/app/globals.css'
+import "@flaticon/flaticon-uicons/css/all/all.css";
 
 export const montserrat = Montserrat({
   subsets: ['latin'],

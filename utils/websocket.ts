@@ -1,6 +1,6 @@
 import * as signalR from '@microsoft/signalr';
 
-const baseUrl = `${process.env.API_ENDPOINT}/websocket`;
+const baseUrl = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/websocket`;
 
 export const getConnection = () => {
     const connection = new signalR.HubConnectionBuilder()
