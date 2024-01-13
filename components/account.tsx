@@ -41,7 +41,7 @@ export default function Account() {
             {user === null ? (
                 <>
                     <a href="/login"><span className="cursor-pointer">Login</span></a>
-                    <a href="/signup"><Button>Sign Up</Button></a>
+                    <a href="/signup"><Button className="bg-highlight">Sign Up</Button></a>
                 </>
             ) : (
                 <>

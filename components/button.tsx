@@ -12,8 +12,7 @@ export default function Button({ id, className, children, onClick, disabled = fa
 
     return (
         <button className={
-            `bg-highlight 
-            font-bold 
+            `font-bold 
             text-text 
             py-[0.75rem] 
             px-[1.5rem] 

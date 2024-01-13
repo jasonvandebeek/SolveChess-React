@@ -102,7 +102,7 @@ export default function Page() {
                             </ColorSelector>
                         </div>
                     </div>
-                    <Button id="create-game" className="text-[1.5rem] w-fit" disabled={selectedUser == null} onClick={handleCreateGame}>Create Game</Button>
+                    <Button id="create-game" className="bg-highlight text-[1.5rem] w-fit" disabled={selectedUser == null} onClick={handleCreateGame}>Create Game</Button>
                 </div>
                 <div className="w-[17.5rem] flex flex-col gap-[1rem]">
                     <div>
