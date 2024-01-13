@@ -37,8 +37,8 @@ export default function FriendCard({ user, onRemoveClick }:Props) {
                     <div className="flex flex-col justify-center bg-container shadow-small z-[1] select-none" onClick={stopPropagation}>
                         <span className="p-[1rem] w-[24rem] text-center text-text text-bold">Do you really want to remove <b>{user.username}</b> as a friend?</span>
                         <div className="px-[2rem] pt-[0] pb-[1rem] flex flex-row gap-[2rem]">
-                            <Button className="grow bg-tone-down hover:bg-highlight" onClick={() => setConfirmation(false)}>Cancel</Button>
-                            <Button className="grow bg-error" onClick={handleConfirmation}>Remove</Button>
+                            <Button className="grow bg-tone-down hover:bg-highlight shadow-small" onClick={() => setConfirmation(false)}>Cancel</Button>
+                            <Button className="grow bg-error shadow-small" onClick={handleConfirmation}>Remove</Button>
                         </div>
                     </div>
                 </div>
