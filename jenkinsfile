@@ -14,15 +14,13 @@ pipeline {
         }
         stage('E2E Tests') {
             environment {
-                TESTING_URL = "https://solvechess.xyz"
-                API_URL = "https://api.solvechess.xyz"
                 GOOGLE_CLIENT_ID = credentials('GOOGLE_CLIENT_ID')
                 GOOGLE_CLIENT_SECRET = credentials('GOOGLE_CLIENT_SECRET')
                 GOOGLE_REFRESH_TOKEN = credentials('GOOGLE_REFRESH_TOKEN')
             }
             steps {
                 nodejs(nodeJSInstallationName: 'Node') {
-                    sh "npx cypress run --browser 'electron' --spec 'cypress/e2e/**'"
+                    sh "npx cypress run --browser 'electron' --spec 'cypress/e2e/**' --env 'TESTING_URL=https://solvechess.xyz,API_URL=https://api.solvechess.xyz,GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID},GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET},GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}'"
                 }
             }
         }
