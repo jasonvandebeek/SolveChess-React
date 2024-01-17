@@ -2,6 +2,7 @@ import '../support/commands'
 
 describe('play move', () => {
 	it('passes', () => {
+		cy.visit(Cypress.env('HOST_URL'));
 		cy.loginWithGoogleOauth();
 		cy.wait(2000);
 		cy.get("#play-button").click();

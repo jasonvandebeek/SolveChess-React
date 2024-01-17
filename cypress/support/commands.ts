@@ -5,7 +5,6 @@ declare namespace Cypress {
 }
 
 Cypress.Commands.add('loginWithGoogleOauth', () => {
-    cy.visit('https://localhost:3000');
     cy.request({
         method: 'POST',
         url: 'https://www.googleapis.com/oauth2/v4/token',
