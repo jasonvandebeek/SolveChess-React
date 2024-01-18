@@ -20,7 +20,8 @@ pipeline {
             }
             steps {
                 nodejs(nodeJSInstallationName: 'Node') {
-                    sh "npx cypress run --browser 'electron' --spec 'cypress/e2e/**' --env 'TESTING_URL=https://solvechess.xyz,API_URL=https://api.solvechess.xyz,GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID},GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET},GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}'"
+                    sh "npm run dev &"
+                    sh "npx cypress run --browser 'electron' --spec 'cypress/e2e/**' --env 'TESTING_URL=http://localhost:3000,API_URL=https://api.solvechess.xyz,GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID},GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET},GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}'"
                 }
             }
         }
